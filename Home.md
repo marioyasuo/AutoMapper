@@ -6,7 +6,6 @@ AutoMapper uses a fluent configuration API to define an object-object mapping st
 
 New to AutoMapper? Check out the [[Getting Started]] page first.
 
-Check out the [[Roadmap]] to see what I'm looking at for future releases.
 # General Features
 * [[Flattening]]
 * [[Projection]]
