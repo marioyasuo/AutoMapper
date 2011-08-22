@@ -1,6 +1,6 @@
 A convention-based object-object mapper.
 
-![Headspring](http://www.headspringsystems.com/banners/opensource-fullbanner-1.jpg)
+![Headspring](http://www.headspring.com/banners/opensource-fullbanner-1.jpg)
 
 AutoMapper uses a fluent configuration API to define an object-object mapping strategy. AutoMapper uses a convention-based matching algorithm to match up source to destination values. Currently, AutoMapper is geared towards model projection scenarios to flatten complex object models to DTOs and other simple objects, whose design is better suited for serialization, communication, messaging, or simply an anti-corruption layer between the domain and application layer.
 
