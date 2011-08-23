@@ -28,6 +28,7 @@ If you're using the static Mapper method, configuration only needs to happen onc
 ## How do I test my mappings?
 
 To test your mappings, you need to create a test that does two things:
+
 * Call your bootstrapper class to create all the mappings
 * Call Mapper.AssertConfigurationIsValid
 
