@@ -16,6 +16,7 @@ New to AutoMapper? Check out the [[Getting Started]] page first.
 * [[Custom Value Resolvers]]
 * [[Custom Value Formatters]]
 * [[Null Substitution]]
+* [[Containers]]
 * [[Mapping Inheritance]]
 
 # Samples
