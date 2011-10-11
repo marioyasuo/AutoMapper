@@ -63,7 +63,7 @@ And supply AutoMapper with either an instance of a custom type converter, or sim
     
     public class TypeTypeConverter : ITypeConverter<string, Type>
     {
-        public Type Convert(string source)
+        public Type Convert(ResolutionContext context)
         {
               return context.SourceType;
         }
