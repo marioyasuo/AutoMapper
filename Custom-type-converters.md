@@ -55,9 +55,9 @@ And supply AutoMapper with either an instance of a custom type converter, or sim
     
     public class DateTimeTypeConverter : ITypeConverter<string, DateTime>
     {
-        public DateTime Convert(string source)
+        public DateTime Convert(ResolutionContext context)
         {
-            return System.Convert.ToDateTime(source);
+            return System.Convert.ToDateTime(context.SourceValue);
         }
     }
     
@@ -65,8 +65,7 @@ And supply AutoMapper with either an instance of a custom type converter, or sim
     {
         public Type Convert(string source)
         {
-            Type type = Assembly.GetExecutingAssembly().GetType(source);
-            return type;
+              return context.SourceType;
         }
     }
 
