@@ -28,7 +28,7 @@ The first option is simply any function that takes a source and returns a destin
 
     public interface ITypeConverter<TSource, TDestination>
     {
-    	TDestination Convert(TSource source);
+    	TDestination Convert(ResolutionContext context);
     }
 
 And supply AutoMapper with either an instance of a custom type converter, or simply the type, which AutoMapper will instantiate at run time.  The mapping configuration for our above source/destination types then becomes:
