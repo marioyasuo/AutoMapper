@@ -2,7 +2,7 @@
 
 One of the common usages of object-object mapping is to take a complex object model and flatten it to a simpler model.  You can take a complex model such as:
 
-
+```c#
     public class Order
     {
     	private readonly IList<OrderLineItem> _orderLineItems = new List<OrderLineItem>();
@@ -52,17 +52,21 @@ One of the common usages of object-object mapping is to take a complex object mo
     {
     	public string Name { get; set; }
     }
+```
 
 We want to flatten this complex Order object into a simpler OrderDto that contains only the data needed for a certain scenario:
 
+```c#
     public class OrderDto
     {
     	public string CustomerName { get; set; }
     	public decimal Total { get; set; }
     }
+```
 
 When you configure a source/destination type pair in AutoMapper, the configurator attempts to match properties and methods on the source type to properties on the destination type.  If for any property on the destination type a property, method, or a method prefixed with "Get" does not exist on the source type, AutoMapper splits the destination member name into individual words (by PascalCase conventions).
 
+```c#
     // Complex model
     
     var customer = new Customer
@@ -90,6 +94,7 @@ When you configure a source/destination type pair in AutoMapper, the configurato
     
     dto.CustomerName.ShouldEqual("George Costanza");
     dto.Total.ShouldEqual(74.85m);
+```
 
 We configured the type map in AutoMapper with the CreateMap method.  AutoMapper can only map type pairs it knows about, so we have explicitly register the source/destination type pair with CreateMap.  To perform the mapping, we use the Map method.
 
