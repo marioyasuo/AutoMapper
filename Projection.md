@@ -2,7 +2,7 @@ Projection transforms a source to a destination beyond flattening the object mod
 
     public class CalendarEvent
     {
-    	public DateTime EventDate { get; set; }
+    	public DateTime Date { get; set; }
     	public string Title { get; set; }
     }
 
@@ -16,7 +16,7 @@ Into something that works better for an input form on a web page:
     	public string Title { get; set; }
     }
 
-Because the names of the destination properties do not exactly match up to the source property (CalendarEventForm.EventDate would need to be CalendarEventForm.EventDateDate), we need to specify custom member mappings in our type map configuration:
+Because the names of the destination properties do not exactly match up to the source property (CalendarEvent.Date would need to be CalendarEventForm.EventDate), we need to specify custom member mappings in our type map configuration:
 
     // Model
     var calendarEvent = new CalendarEvent
