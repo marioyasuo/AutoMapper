@@ -1,5 +1,5 @@
 # Mapping Inheritance
-AutoMapper 1.1 had an method called .Include<> when creating your maps which allowed AutoMapper to automatically select the most derived mapping for a class.
+AutoMapper 1.1 had a method called .Include<> when creating your maps which allowed AutoMapper to automatically select the most derived mapping for a class.
 
 Take:
 
