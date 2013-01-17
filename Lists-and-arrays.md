@@ -1,5 +1,5 @@
 AutoMapper only requires configuration of element types, not of any array or list type that might be used.  For example, we might have a simple source and destination type:
-
+```csharp
     public class Source
     {
     	public int Value { get; set; }
@@ -9,9 +9,9 @@ AutoMapper only requires configuration of element types, not of any array or lis
     {
     	public int Value { get; set; }
     }
-
+```
 All the basic generic collection types are supported:
-
+```csharp
     Mapper.CreateMap<Source, Destination>();
     
     var sources = new[]
@@ -26,7 +26,7 @@ All the basic generic collection types are supported:
     IList<Destination> ilistDest = Mapper.Map<Source[], IList<Destination>>(sources);
     List<Destination> listDest = Mapper.Map<Source[], List<Destination>>(sources);
     Destination[] arrayDest = Mapper.Map<Source[], Destination[]>(sources);
-
+```
 To be specific, the source collection types supported include:
 
 * IEnumerable
@@ -42,7 +42,7 @@ For the non-generic enumerable types, only unmapped, assignable types are suppor
 
 # Polymorphic element types in collections
 Many times, we might have a hierarchy of types in both our source and destination types.  AutoMapper supports polymorphic arrays and collections, such that derived source/destination types are used if found.
-
+```csharp
     public class ParentSource
     {
     	public int Value1 { get; set; }
@@ -62,9 +62,9 @@ Many times, we might have a hierarchy of types in both our source and destinatio
     {
     	public int Value2 { get; set; }
     }
-
+```
 AutoMapper still requires explicit configuration for child mappings, as AutoMapper cannot "guess" which specific child destination mapping to use.  Here is an example of the above types:
-
+```csharp
     Mapper.CreateMap<ParentSource, ParentDestination>()
     	.Include<ChildSource, ChildDestination>();
     Mapper.CreateMap<ChildSource, ChildDestination>();
@@ -81,3 +81,4 @@ AutoMapper still requires explicit configuration for child mappings, as AutoMapp
     destinations[0].ShouldBeInstanceOf<ParentDestination>();
     destinations[1].ShouldBeInstanceOf<ChildDestination>();
     destinations[2].ShouldBeInstanceOf<ParentDestination>();
+```
