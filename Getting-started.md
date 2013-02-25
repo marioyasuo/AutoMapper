@@ -17,7 +17,7 @@ Once you have your types, and a reference to AutoMapper, you can create a map fo
 
 The type on the left is the source type, and the type on the right is the destination type.  To perform a mapping, use the Map method.
 
-    OrderDto dto = Mapper.Map<Order, OrderDto>(order);
+    OrderDto dto = Mapper.Map<OrderDto>(order);
 
 AutoMapper also has non-generic versions of these methods, for those cases where you might not know the type at compile time.
 
