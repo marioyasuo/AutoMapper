@@ -12,7 +12,6 @@ New to AutoMapper? Check out the [[Getting Started]] page first.
 * [[Nested Mappings]]
 * [[Custom Type Converters]]
 * [[Custom Value Resolvers]]
-* [[Custom Value Formatters]]
 * [[Null Substitution]]
 * [[Containers]]
 * [[Mapping Inheritance]]
