@@ -15,6 +15,7 @@ New to AutoMapper? Check out the [[Getting Started]] page first.
 * [[Null Substitution]]
 * [[Containers]]
 * [[Mapping Inheritance]]
+* [[Queryable Extensions]]
 
 # Samples
 The source code contains unit tests and samples for all of the features listed above.  To view the samples, download the source code from the link below and open the AutoMapper.sln solution.
@@ -23,4 +24,3 @@ The source code contains unit tests and samples for all of the features listed a
 The latest builds can be found at [teamcity.codebetter.com](http://teamcity.codebetter.com/project.html?projectId=project13)
 
 The discussion group is hosted on [Google Groups](http://groups.google.com/group/automapper-users)
-
