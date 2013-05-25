@@ -2,7 +2,7 @@ Projection transforms a source to a destination beyond flattening the object mod
 ```csharp
     public class CalendarEvent
     {
-    	public DateTime EventDate { get; set; }
+    	public DateTime Date { get; set; }
     	public string Title { get; set; }
     }
 ```
