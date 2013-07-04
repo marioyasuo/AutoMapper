@@ -1,6 +1,6 @@
-Profile Instances
-Can be used to organize AutoMapper Configuration
-````c#
+# Profile Instances
+can be used to organize AutoMapper Configuration
+````csharp
 public class OrganizationProfile : Profile 
 {
   protected override void Configure() 
@@ -16,7 +16,7 @@ public class OrganizationProfile : Profile
 ````
 
 Initialize the profile like so 
-````v#
+````csharp
 Mapper.Initialize(cfg => {
   cfg.AddProfile<OrganizationProfile>();
 });
