@@ -17,6 +17,7 @@ New to AutoMapper? Check out the [[Getting Started]] page first.
 * [[Mapping Inheritance]]
 * [[Queryable Extensions]]
 * [[Configuration]]
+* [[Conditional Mapping]]
 
 # Samples
 The source code contains unit tests and samples for all of the features listed above.  To view the samples, download the source code from the link below and open the AutoMapper.sln solution.
