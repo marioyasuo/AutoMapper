@@ -11,7 +11,7 @@ Mapping code is boring.  Testing mapping code is even more boring.  AutoMapper p
 
 First, you need both a source and destination type to work with.  The destination type's design can be influenced by the layer in which it lives, but AutoMapper works best as long as the names of the members match up to the source type's members.  If you have a source member called "FirstName", this will automatically be mapped to a destination member with the name "FirstName".  AutoMapper also supports [[Flattening]].
 
-AutoMapper will ignore null reference exceptions when mapping your source to your target. This is by design. If you don't like this approach, you can combine AutoMapper's approach with a  [[Custom-value-resolvers]] if needed.
+AutoMapper will ignore null reference exceptions when mapping your source to your target. This is by design. If you don't like this approach, you can combine AutoMapper's approach with [[Custom-value-resolvers]] if needed.
 
 Once you have your types, and a reference to AutoMapper, you can create a map for the two types.
 
