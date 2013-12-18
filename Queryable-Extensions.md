@@ -66,6 +66,7 @@ If the expression is rejected from your query provider (Entity Framework, NHiber
 Not all mapping options can be supported, as the expression generated must be interpreted by a LINQ provider. Only what is supported by LINQ providers is supported by AutoMapper:
 * MapFrom
 * Ignore
+
 Not supported:
 * Condition
 * DoNotUseDestinationValue
