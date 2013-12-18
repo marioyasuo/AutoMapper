@@ -61,3 +61,17 @@ In the case where members names don't line up, or you want to create calculated 
 AutoMapper passes the supplied expression with the built projection. As long as your query provider can interpret the supplied expression, everything will be passed down all the way to the database.
 
 If the expression is rejected from your query provider (Entity Framework, NHibernate, etc.), you might need to tweak your expression until you find one that is accepted.
+
+### Supported mapping options
+Not all mapping options can be supported, as the expression generated must be interpreted by a LINQ provider. Only what is supported by LINQ providers is supported by AutoMapper:
+* MapFrom
+* Ignore
+Not supported:
+* Condition
+* DoNotUseDestinationValue
+* SetMappingOrder
+* UseDestinationValue
+* UseValue
+* ResolveUsing
+
+Additionally, recursive or self-referencing destination types are not supported as LINQ providers do not support this. Typically hierarchical relational data models require common table expressions (CTEs) to correctly resolve a recursive join.
