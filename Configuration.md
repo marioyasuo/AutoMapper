@@ -25,10 +25,10 @@ Mapper.Initialize(cfg => {
 ## Naming Conventions
 You can set the source and destination naming conventions
 ````csharp
-Mapper.Initialize(cfg =>
+Mapper.Initialize(cfg => {
   cfg.SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
   cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
-}
+});
 ````
 This will map the following properties to each other: 
 `  property_name -> PropertyName `
