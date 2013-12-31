@@ -4,9 +4,11 @@ AutoMapper uses a fluent configuration API to define an object-object mapping st
 
 AutoMapper supports the following platforms:
 * .NET 4 and higher
-* Silverlight 4 and higher
-* Windows Phone 7.5 and higher
+* Silverlight 5
+* Windows Phone 8
 * .NET for Windows Store apps (WinRT)
+* [[Xamarin.iOS]]
+* [[Xamarin.Android]]
 
 New to AutoMapper? Check out the [[Getting Started]] page first.
 
