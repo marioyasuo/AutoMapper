@@ -3,7 +3,7 @@
 
 AutoMapper is an object-object mapper.  Object-object mapping works by transforming an input object of one type into an output object of a different type.  What makes AutoMapper interesting is that it provides some interesting conventions to take the dirty work out of figuring out how to map type A to type B.  As long as type B follows AutoMapper's established convention, almost zero configuration is needed to map two types.
 
-## Why use AutoMapper?
+## Why use AutoMapper?asdf
 
 Mapping code is boring.  Testing mapping code is even more boring.  AutoMapper provides simple configuration of types, as well as simple testing of mappings.  The real question may be "why use object-object mapping?"  Mapping can occur in many places in an application, but mostly in the boundaries between layers, such as between the UI/Domain layers, or Service/Domain layers.  Concerns of one layer often conflict with concerns in another, so object-object mapping leads to segregated models, where concerns for each layer can affect only types in that layer.
 
