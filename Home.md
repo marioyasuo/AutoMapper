@@ -28,7 +28,7 @@ New to AutoMapper? Check out the [[Getting Started]] page first.
 * [[Conditional Mapping]]
 
 # Samples
-The source code contains unit tests and samples for all of the features listed above.  To view the samples, download the source code from the link below and open the AutoMapper.sln solution.
+The source code contains unit tests and samples for all of the features listed above.  To view the samples, browse the [source code](https://github.com/AutoMapper/AutoMapper/tree/develop/src/AutoMapperSamples).
 # Housekeeping
 
 The latest builds can be found at [NuGet](http://www.nuget.org/packages/automapper)
