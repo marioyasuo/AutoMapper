@@ -84,6 +84,6 @@ To demonstrate this, lets modify our classes shown above
     var mapped = Mapper.Map(order, order.GetType(), typeof(OrderDto));
     Assert.Equals("google", mapped.Referrer);
 ```
-Notice that in our mapping configuration, we have ignored Referred (because it doesn't exist in the order base class), but convention has a higher priority that Ignored properties in the base class mappings, so the property still gets mapped.
+Notice that in our mapping configuration, we have ignored Referred (because it doesn't exist in the order base class), but convention has a higher priority than Ignored properties in the base class mappings, so the property still gets mapped.
 
 Overall this feature should make using AutoMapper with classes that leverage inheritance feel more natural.
