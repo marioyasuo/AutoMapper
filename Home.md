@@ -24,7 +24,7 @@ New to AutoMapper? Check out the [[Getting Started]] page first.
 * [[Null Substitution]]
 * [[Containers]]
 * [[Mapping Inheritance]]
-* [[Queryable Extensions (LINQ)]]
+* [[Queryable Extensions]] (LINQ)
 * [[Configuration]]
 * [[Conditional Mapping]]
 
