@@ -41,6 +41,62 @@ In that case, we would need to configure the additional source/destination type 
     dest.Value.ShouldEqual(5);
     dest.Inner.ShouldNotBeNull();
     dest.Inner.OtherValue.ShouldEqual(15);
+
+Maybe we want to be free from creating so many nested mappings,Here is a simple way to resolve：
+/// <summary>
+        /// 递归创建类型间的映射关系
+        /// </summary>
+        /// <param name="sourceType"></param>
+        /// <param name="destinationType"></param>
+        public static void CreatNenestedMappers(Type sourceType, Type destinationType)
+        {
+            PropertyInfo[] sourceProperties = sourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            PropertyInfo[] destinationProperties = destinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var destinationProperty in destinationProperties)
+            {
+                Type destinationPropertyType = destinationProperty.PropertyType;
+                if (Filter(destinationPropertyType))
+                    continue;
+
+                PropertyInfo sourceProperty = sourceProperties.FirstOrDefault(prop => NameMatches(prop.Name, destinationProperty.Name));
+                if (sourceProperty == null)
+                    continue;
+
+                Type sourcePropertyType=sourceProperty.PropertyType;
+                if (destinationPropertyType.IsGenericType)
+                {
+                    Type destinationGenericType = destinationPropertyType.GetGenericArguments()[0];
+                    if (Filter(destinationGenericType))
+                        continue;
+
+                    Type sourceGenericType = sourcePropertyType.GetGenericArguments()[0];
+                    CreateMappers(sourceGenericType, destinationGenericType);
+                }
+                else
+                {
+                    CreateMappers(sourcePropertyType, destinationPropertyType);
+                }
+            }
+
+            Mapper.CreateMap(sourceType, destinationType);
+        }
+
+        /// <summary>
+        /// 过滤
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        static bool Filter(Type type)
+        {
+            return type.IsPrimitive || NoPrimitiveTypes.Contains(type.Name);
+        }
+
+        static readonly HashSet<string> NoPrimitiveTypes = new HashSet<string>() { "String", "DateTime", "Decimal" };
+
+        private static bool NameMatches(string memberName, string nameToMatch)
+        {
+            return String.Compare(memberName, nameToMatch, StringComparison.OrdinalIgnoreCase) == 0;
+        }
 ```
 A few things to note here:
 
