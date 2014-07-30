@@ -5,7 +5,7 @@ public class OrganizationProfile : Profile
 {
   protected override void Configure() 
   {
-    //Put your Mapper.CreateMap... Etc.. here
+    //Put CreateMap... Etc.. here
   }
 
   public override string ProfileName  
