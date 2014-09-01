@@ -73,6 +73,16 @@ If we don't want AutoMapper to use reflection to create the instance, we can eit
 
 AutoMapper will execute this callback function instead of using reflection during the mapping operation, helpful in scenarios where the resolver might have constructor arguments or need to be constructed by an IoC container.
 ## Customizing the source value supplied to the resolver
-Coming soon
-## Custom value resolution expressions
-Coming soon
+By default, AutoMapper passes the source object to the resolver. This limits the reusability of resolvers, since the resolver is coupled to the source type. If, however, we supply a common resolver across multiple types, we configure AutoMapper to redirect the source value supplied to the resolver:
+```c#
+Mapper.CreateMap<Source, Destination>()
+    .ForMember(dest => dest.Total,
+        opt => opt.ResolveUsing<CustomResolver>().FromMember(src => src.SubTotal));
+Mapper.CreateMap<OtherSource, OtherDest>()
+    .ForMember(dest => dest.OtherTotal,
+        opt => opt.ResolveUsing<CustomResolver>().FromMember(src => src.OtherSubTotal));
+
+public class CustomResolver : ValueResolver<decimal, decimal> {
+// logic here
+}
+```
