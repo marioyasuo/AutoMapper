@@ -42,7 +42,9 @@ In that case, we would need to configure the additional source/destination type 
     dest.Inner.ShouldNotBeNull();
     dest.Inner.OtherValue.ShouldEqual(15);
 
+```
 Maybe we want to be free from creating so many nested mappings,Here is a simple way to resolve：
+```
         /// <summary>
         /// 递归创建类型间的映射关系
         ///created by cqwang
