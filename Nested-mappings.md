@@ -46,7 +46,7 @@ In that case, we would need to configure the additional source/destination type 
 Maybe we want to be free from creating so many nested mappings,Here is a simple way to resolve：
 ```
         /// <summary>
-        /// 递归创建类型间的映射关系
+        /// 递归创建类型间的映射关系 (Recursively create mappings between types)
         ///created by cqwang
         /// </summary>
         /// <param name="sourceType"></param>
@@ -85,7 +85,7 @@ Maybe we want to be free from creating so many nested mappings,Here is a simple 
         }
 
         /// <summary>
-        /// 过滤
+        /// 过滤 (Filter)
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
