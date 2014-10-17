@@ -51,7 +51,7 @@ Maybe we want to be free from creating so many nested mappings,Here is a simple 
         /// </summary>
         /// <param name="sourceType"></param>
         /// <param name="destinationType"></param>
-        public static void CreatNenestedMappers(Type sourceType, Type destinationType)
+        public static void CreateNestedMappers(Type sourceType, Type destinationType)
         {
             PropertyInfo[] sourceProperties = sourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             PropertyInfo[] destinationProperties = destinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
