@@ -10,7 +10,7 @@ class Bar {
   uint baz; 
 }
 ````
-In the following mapping the property baz will only be mapped if it is greater then or equal to 0 in the source object.
+In the following mapping the property baz will only be mapped if it is greater than or equal to 0 in the source object.
 ````
 Mapper.CreateMap<Foo,Bar>()
   .ForMember(dest => dest.baz, opt => opt.Condition(src => (src.baz >= 0)); 
