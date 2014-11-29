@@ -45,3 +45,29 @@ public class OrganizationProfile : Profile
   }
 }
 ````
+
+## Replacing characters
+You can also replace individual characters or entire words in source members during member name matching:
+```c#
+public class Source
+{
+    public int Value { get; set; }
+    public int Ävíator { get; set; }
+    public int SubAirlinaFlight { get; set; }
+}
+public class Destination
+{
+    public int Value { get; set; }
+    public int Aviator { get; set; }
+    public int SubAirlineFlight { get; set; }
+}
+```
+We want to replace the individual characters, and perhaps translate a word:
+```c#
+Mapper.Initialize(c =>
+{
+    c.ReplaceMemberName("Ä", "A");
+    c.ReplaceMemberName("í", "i");
+    c.ReplaceMemberName("Airlina", "Airline");
+});
+```
