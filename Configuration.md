@@ -71,3 +71,15 @@ Mapper.Initialize(c =>
     c.ReplaceMemberName("Airlina", "Airline");
 });
 ```
+
+## Configuring visibility
+
+By default, AutoMapper only recognizes public members. It can map to private setters, but will skip internal/private methods and properties if the entire property is private/internal. To instruct AutoMapper to recognize members with other visibilities, override the default BindingFlags:
+```c#
+Mapper.Initialize(cfg =>
+{
+    cfg.BindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+    cfg.CreateMap<Source, Destination>();
+});
+```
+Map configurations will now recognize internal/private members.
