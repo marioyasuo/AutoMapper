@@ -23,7 +23,7 @@ Take:
     Assert.IsType<OnlineOrderDto>(mapped);
 ```
 You will notice that because the mapped object is a OnlineOrder, AutoMapper has seen you have a more specific mapping for OnlineOrder than OrderDto, and automatically chosen that.
-The shortcoming of AutoMapper 1.1 was that any mapping configuration you made on the base mapping had to be recreated on each of the child mappings. This ends up with duplicated configuration and lot's of extra mapping code.
+The shortcoming of AutoMapper 1.1 was that any mapping configuration you made on the base mapping had to be recreated on each of the child mappings. This ends up with duplicated configuration and lots of extra mapping code.
 ```c#
     Mapper.CreateMap<Order, OrderDto>()
           .Include<OnlineOrder, OnlineOrderDto>()
@@ -46,6 +46,16 @@ In AutoMapper 2.0, this becomes:
 ```
 Because we have defined the mapping for the base class, we no longer have to define it in the child mappings.
 
+# Specifying inheritance in derived classes
+Instead of configuring inheritance from the base class, you can specify inheritance from the derived classes:
+```c#
+Mapper.CreateMap<Order, OrderDto>()
+    .ForMember(o => o.Id, m => m.MapFrom(s => s.OrderId));
+Mapper.CreateMap<OnlineOrder, OnlineOrderDto>()
+    .IncludeBase<Order, OrderDto>();
+Mapper.CreateMap<MailOrder, MailOrderDto>()
+    .IncludeBase<Order, OrderDto>();
+```
 ## Inheritance Mapping Priorities
 This introduces additional complexity because there are multiple ways a property can be mapped. The priority of these sources are as follows
 
