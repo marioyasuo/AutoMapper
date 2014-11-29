@@ -86,6 +86,14 @@ AutoMapper passes the supplied expression with the built projection. As long as 
 
 If the expression is rejected from your query provider (Entity Framework, NHibernate, etc.), you might need to tweak your expression until you find one that is accepted.
 
+### Custom Type Conversion
+
+Occasionally, you need to completely replace a type conversion from a source to a destination type. In normal runtime mapping, this is accomplished via the ConvertUsing method. To perform the analog in LINQ projection, use the ProjectUsing method:
+```
+Mapper.CreateMap<Source, Dest>().ProjectUsing(src => new Dest { Value = 10 });
+```
+`ProjectUsing` is slightly more limited than `ConvertUsing` as only what is allowed in an Expression and the underlying LINQ provider will work.
+
 ### Aggregations
 
 LINQ can support aggregate queries, and AutoMapper supports LINQ extension methods. In the custom projection example, if we renamed the `TotalContacts` property to `ContactsCount`, AutoMapper would match to the `Count()` extension method and the LINQ provider would translate the count into a correlated subquery to aggregate child records.
@@ -114,14 +122,18 @@ This works by capturing the name of the closure's field name in the original exp
 Not all mapping options can be supported, as the expression generated must be interpreted by a LINQ provider. Only what is supported by LINQ providers is supported by AutoMapper:
 * MapFrom
 * Ignore
+* UseValue
+* NullSubstitute
 
 Not supported:
 * Condition
 * DoNotUseDestinationValue
 * SetMappingOrder
 * UseDestinationValue
-* UseValue
 * ResolveUsing
+* Before/AfterMap
+* Custom resolvers
+* Custom type converters
 * **Any calculated property on your domain object**
 
 Additionally, recursive or self-referencing destination types are not supported as LINQ providers do not support this. Typically hierarchical relational data models require common table expressions (CTEs) to correctly resolve a recursive join.
