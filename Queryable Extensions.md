@@ -109,6 +109,21 @@ var orders = dbContext.Orders.Project().To<OrderDto>().ToList();
 orders[0].OrderType.ShouldEqual("Online");
 ```
 
+### Explicit expansion
+
+In some scenarios, such as OData, a generic DTO is returned through an IQueryable controller action. Without explicit instructions, AutoMapper will expand all members in the result. To control which members are expanded during projection, pass in the members you want to explicitly expand:
+```c#
+dbContext.Orders.Project().To<OrderDto>(
+    parameters = null,
+    dest => dest.Customer,
+    dest => dest.LineItems);
+// or string-based
+dbContext.Orders.Project().To<OrderDto>()
+    parameters = null,
+    "Customer",
+    "LineItems");
+```
+
 ### Aggregations
 
 LINQ can support aggregate queries, and AutoMapper supports LINQ extension methods. In the custom projection example, if we renamed the `TotalContacts` property to `ContactsCount`, AutoMapper would match to the `Count()` extension method and the LINQ provider would translate the count into a correlated subquery to aggregate child records.
