@@ -22,6 +22,7 @@ New to AutoMapper? Check out the [[Getting Started]] page first.
 * [[Custom Type Converters]]
 * [[Custom Value Resolvers]]
 * [[Null Substitution]]
+* [[Before and after mapping actions]]
 * [[Containers]]
 * [[Mapping Inheritance]]
 * [[Queryable Extensions]] (LINQ)
