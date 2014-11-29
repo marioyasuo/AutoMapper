@@ -94,6 +94,21 @@ Mapper.CreateMap<Source, Dest>().ProjectUsing(src => new Dest { Value = 10 });
 ```
 `ProjectUsing` is slightly more limited than `ConvertUsing` as only what is allowed in an Expression and the underlying LINQ provider will work.
 
+### String conversion
+
+AutoMapper will automatically add `ToString()` when the destination member type is a string and the source member type is not.
+
+```c#
+public class Order {
+    public OrderTypeEnum OrderType { get; set; }
+}
+public class OrderDto {
+    public string OrderType { get; set; }
+} 
+var orders = dbContext.Orders.Project().To<OrderDto>().ToList();
+orders[0].OrderType.ShouldEqual("Online");
+```
+
 ### Aggregations
 
 LINQ can support aggregate queries, and AutoMapper supports LINQ extension methods. In the custom projection example, if we renamed the `TotalContacts` property to `ContactsCount`, AutoMapper would match to the `Count()` extension method and the LINQ provider would translate the count into a correlated subquery to aggregate child records.
