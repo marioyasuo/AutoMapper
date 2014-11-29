@@ -94,6 +94,15 @@ Mapper.CreateMap<Source, Dest>().ProjectUsing(src => new Dest { Value = 10 });
 ```
 `ProjectUsing` is slightly more limited than `ConvertUsing` as only what is allowed in an Expression and the underlying LINQ provider will work.
 
+### Custom destination type constructors
+
+If your destination type has a custom constructor but you don't want to override the entire mapping, use the ConstructProjectionUsing method:
+```c#
+Mapper.CreateMap<Source, Dest>()
+    .ConstructProjectionUsing(src => new Dest(src.Value + 10));
+```
+AutoMapper will automatically match up destination constructor parameters to source members based on matching names, so only use this method if AutoMapper can't match up the destination constructor properly, or if you need extra customization during construction.
+
 ### String conversion
 
 AutoMapper will automatically add `ToString()` when the destination member type is a string and the source member type is not.
