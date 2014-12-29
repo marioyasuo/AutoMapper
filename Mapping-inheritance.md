@@ -63,7 +63,6 @@ This introduces additional complexity because there are multiple ways a property
  - Inherited Explicit Mapping
  - Ignore Property Mapping
  - Convention Mapping (Properties that are matched via convention)
- - Inherited Ignore Property Mapping
 
 To demonstrate this, lets modify our classes shown above
 ```c#
