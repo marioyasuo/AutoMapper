@@ -36,4 +36,6 @@ The source code contains unit tests and samples for all of the features listed a
 
 The latest builds can be found at [NuGet](http://www.nuget.org/packages/automapper)
 
+The dev builds can be found at [MyGet](https://www.myget.org/F/automapperdev/api/v2)
+
 The discussion group is hosted on [Google Groups](http://groups.google.com/group/automapper-users)
