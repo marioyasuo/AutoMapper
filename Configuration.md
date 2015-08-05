@@ -1,3 +1,16 @@
+## Initialization
+
+Initialization is the preferred mode of configuring AutoMapper, and should be done once per AppDomain:
+
+```csharp
+Mapper.Initialize(cfg => {
+    cfg.CreateMap<Foo, Bar>();
+    cfg.AddProfile<FooProfile>();
+});
+```
+
+Mapping configuration is static and should not change/be modified.
+
 ## Profile Instances
 can be used to organize AutoMapper Configuration
 ````csharp
