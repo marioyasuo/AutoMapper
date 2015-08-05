@@ -21,3 +21,9 @@ dest.Value.ShouldEqual(10);
 ```
 Because C# only allows closed generic type parameters, you have to use the System.Type version of CreateMap to create your open generic type maps. From there, you can use all of the mapping configuration available and the open generic configuration will be applied to the closed type map at runtime.
 AutoMapper will skip open generic type maps during configuration validation, since you can still create closed types that don't convert, such as `Source<Foo> -> Destination<Bar>` where there is no conversion from Foo to Bar.
+
+You can also create an open generic type converter:
+
+```c#
+Mapper.CreateMap(typeof(Source<>), typeof(Destination<>)).ConvertUsing(typeof(Converter<>));
+```
