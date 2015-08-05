@@ -113,6 +113,16 @@ Mapper.Initialize(cfg => {
 });
 ```
 
+## Global property/field filtering
+
+By default, AutoMapper tries to map every public property/field. You can filter out properties/fields with the property/field filters:
+
+```c#
+Mapper.Initialize(cfg => {
+    cfg.ShouldMapProperty = pi => pi.IsPublic || pi.IsPrivate;
+});
+```
+
 ## Configuring visibility
 
 By default, AutoMapper only recognizes public members. It can map to private setters, but will skip internal/private methods and properties if the entire property is private/internal. To instruct AutoMapper to recognize members with other visibilities, override the default BindingFlags:
