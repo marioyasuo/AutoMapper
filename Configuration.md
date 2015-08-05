@@ -84,6 +84,34 @@ Mapper.Initialize(c =>
     c.ReplaceMemberName("Airlina", "Airline");
 });
 ```
+## Recognizing pre/postfixes
+
+Sometimes your source/destination properties will have common pre/postfixes that cause you to have to do a bunch of custom member mappings because the names don't match up. To address this, you can recognize pre/postixes:
+
+```c#
+public class Source {
+    public int frmValue { get; set; }
+    public int frmValue2 { get; set; }
+}
+public class Dest {
+    public int Value { get; set; }
+    public int Value2 { get; set; }
+}
+Mapper.Initialize(cfg => {
+    cfg.RecognizePrefix("frm");
+    cfg.CreateMap<Source, Dest>();
+});
+Mapper.AssertConfigurationIsValid();
+```
+
+By default AutoMapper recognizes the prefix "Get", if you need to clear the prefix:
+
+```c#
+Mapper.Initialize(cfg => {
+    cfg.ClearPrefixes();
+    cfg.RecognizePrefixes("tmp");
+});
+```
 
 ## Configuring visibility
 
