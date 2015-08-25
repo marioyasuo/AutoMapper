@@ -94,7 +94,7 @@ Maybe we want to be free from creating so many nested mappings,Here is a simple 
             return type.IsPrimitive || NoPrimitiveTypes.Contains(type.Name);
         }
 
-        static readonly HashSet<string> NoPrimitiveTypes = new HashSet<string>() { "String", "DateTime", "Decimal" };
+        static readonly HashSet<string> NoPrimitiveTypes = new HashSet<string>() { "String", "DateTime", "Decimal", "TimeSpan" };
 
         private static bool NameMatches(string memberName, string nameToMatch)
         {
