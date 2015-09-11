@@ -16,6 +16,17 @@ Take:
           .Include<MailOrder, MailOrderDto>();
     Mapper.CreateMap<OnlineOrder, OnlineOrderDto>();
     Mapper.CreateMap<MailOrder, MailOrderDto>();
+    Mapper.Configuration.Seal();
+
+    // Or
+    Mapper.Initialize(cfg => {
+        cfg.CreateMap<Order, OrderDto>()
+          .Include<OnlineOrder, OnlineOrderDto>()
+          .Include<MailOrder, MailOrderDto>();
+        cfg.CreateMap<OnlineOrder, OnlineOrderDto>();
+        cfg.CreateMap<MailOrder, MailOrderDto>();
+    });
+
 
     // Perform Mapping
     var order = new OnlineOrder();
@@ -24,6 +35,7 @@ Take:
 ```
 You will notice that because the mapped object is a OnlineOrder, AutoMapper has seen you have a more specific mapping for OnlineOrder than OrderDto, and automatically chosen that.
 The shortcoming of AutoMapper 1.1 was that any mapping configuration you made on the base mapping had to be recreated on each of the child mappings. This ends up with duplicated configuration and lots of extra mapping code.
+In AutoMapper 4.0, the mapping plan for inheritance is pre-calculated during configuration, so you need to either seal the configuration or use Initialize to ensure mapping inheritance works.
 ```c#
     Mapper.CreateMap<Order, OrderDto>()
           .Include<OnlineOrder, OnlineOrderDto>()
