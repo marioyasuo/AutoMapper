@@ -33,8 +33,8 @@ Mapper.Initialize(cfg =>
 ```
 When mapping from DTO Expression
 ```
-Expression<OrderLineDTO, bool> dtoExpression = dto=> dto.Item.StartsWith("A");
-var expression = Mappper.Map<<Expression<OrderLine, bool>>>(dtoExpression);
+Expression<Func<OrderLineDTO, bool>> dtoExpression = dto=> dto.Item.StartsWith("A");
+var expression = Mapper.Map<Func<Expression<OrderLine, bool>>>(dtoExpression);
 ```
 Expression will bet translated to `ol => ol.Item.Name.StartsWith("A")`
 
@@ -42,8 +42,8 @@ Automapper knows `dto.Item` is mapped to `ol.Item.Name` so it substituted it for
 
 Expression translation can work on expressions of collections as well.
 ```
-Expression<IQueryable<OrderLineDTO>,IQueryable<OrderLineDTO>> dtoExpression = dtos => dtos.Where(dto => dto.Quantity > 5).OrderBy(dto => dto.Quantity);
-var expression = Mapper.Map<Expression<IQueryable<OrderLine>,IQueryable<OrderLine>>>(dtoExpression);
+Expression<Func<IQueryable<OrderLineDTO>,IQueryable<OrderLineDTO>>> dtoExpression = dtos => dtos.Where(dto => dto.Quantity > 5).OrderBy(dto => dto.Quantity);
+var expression = Mapper.Map<Expression<Func<IQueryable<OrderLine>,IQueryable<OrderLine>>>(dtoExpression);
 ```
 Resulting in `ols => ols.Where(ol => ol.Quantity > 5).OrderBy(ol => ol.Quantity)`
 
