@@ -1,5 +1,3 @@
-## Dynamic/Expando Objects
-
 AutoMapper can map to/from dynamic objects without any configuration:
 
 ```cs
