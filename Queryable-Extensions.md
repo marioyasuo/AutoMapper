@@ -42,11 +42,11 @@ You can use the Queryable Extensions like so:
       using (var context = new orderEntities())
       {
         return context.OrderLines.Where(ol => ol.OrderId == orderId)
-                 .Project().To<OrderLineDTO>().ToList();
+                 .ProjectTo<OrderLineDTO>().ToList();
       }
     }
 
-The `.Project().To<OrderLineDTO>()` will tell AutoMapper's mapping engine to emit a `select` clause to the IQueryable that will inform entity framework that it only needs to query the Name column of the Item table, same as if you manually projected your `IQueryable` to an `OrderLineDTO` with a `Select` clause. 
+The `.ProjectTo<OrderLineDTO>()` will tell AutoMapper's mapping engine to emit a `select` clause to the IQueryable that will inform entity framework that it only needs to query the Name column of the Item table, same as if you manually projected your `IQueryable` to an `OrderLineDTO` with a `Select` clause. 
 
 Note that for this feature to work, all type conversions must be explicitly handled in your Mapping. For example, you can not rely on the `ToString()` override of the `Item` class to inform entity framework to only select from the `Name` column, and any data type changes, such as `Double` to `Decimal` must be explicitly handled as well.
 
@@ -114,7 +114,7 @@ public class Order {
 public class OrderDto {
     public string OrderType { get; set; }
 } 
-var orders = dbContext.Orders.Project().To<OrderDto>().ToList();
+var orders = dbContext.Orders.ProjectTo<OrderDto>().ToList();
 orders[0].OrderType.ShouldEqual("Online");
 ```
 
@@ -122,12 +122,12 @@ orders[0].OrderType.ShouldEqual("Online");
 
 In some scenarios, such as OData, a generic DTO is returned through an IQueryable controller action. Without explicit instructions, AutoMapper will expand all members in the result. To control which members are expanded during projection, pass in the members you want to explicitly expand:
 ```c#
-dbContext.Orders.Project().To<OrderDto>(
+dbContext.Orders.ProjectTo<OrderDto>(
     parameters = null,
     dest => dest.Customer,
     dest => dest.LineItems);
 // or string-based
-dbContext.Orders.Project().To<OrderDto>()
+dbContext.Orders.ProjectTo<OrderDto>()
     parameters = null,
     "Customer",
     "LineItems");
@@ -154,7 +154,7 @@ Mapper.CreateMap<Course, CourseModel>()
 ```
 When we project, we'll substitute our parameter at runtime:
 ```
-dbContext.Courses.Project().To<CourseModel>(new { currentUserName = Request.User.Name });
+dbContext.Courses.ProjectTo<CourseModel>(new { currentUserName = Request.User.Name });
 ```
 This works by capturing the name of the closure's field name in the original expression, then using an anonymous object/dictionary to apply the value to the parameter value before the query is sent to the query provider.
 ### Supported mapping options
