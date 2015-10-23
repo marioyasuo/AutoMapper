@@ -65,10 +65,11 @@ Many times, we might have a hierarchy of types in both our source and destinatio
 ```
 AutoMapper still requires explicit configuration for child mappings, as AutoMapper cannot "guess" which specific child destination mapping to use.  Here is an example of the above types:
 ```csharp
-    Mapper.CreateMap<ParentSource, ParentDestination>()
-    	.Include<ChildSource, ChildDestination>();
-    Mapper.CreateMap<ChildSource, ChildDestination>();
-    
+    Mapper.Initialize(c=> {
+        c.CreateMap<ParentSource, ParentDestination>()
+    	     .Include<ChildSource, ChildDestination>();
+        c.CreateMap<ChildSource, ChildDestination>();
+    });
     var sources = new[]
     	{
     		new ParentSource(),
