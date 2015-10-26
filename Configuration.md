@@ -118,8 +118,14 @@ Mapper.Initialize(cfg => {
 By default, AutoMapper tries to map every public property/field. You can filter out properties/fields with the property/field filters:
 
 ```c#
-Mapper.Initialize(cfg => {
-    cfg.ShouldMapProperty = pi => pi.IsPublic || pi.IsPrivate;
+Mapper.Initialize(cfg =>
+{
+	// don't map any fields
+	cfg.ShouldMapField = fi => false;
+
+	// map properties with a public or private getter
+	cfg.ShouldMapProperty = pi =>
+		pi.GetMethod != null && (pi.GetMethod.IsPublic || pi.GetMethod.IsPrivate);
 });
 ```
 
