@@ -130,8 +130,8 @@ By default, AutoMapper only recognizes public members. It can map to private set
 ```c#
 Mapper.Initialize(cfg =>
 {
-    // map all the properties, probably you need something more restrictive here
-    cfg.ShouldMapProperty = p => true;
+    // map properties with public or internal getters
+    cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
     cfg.CreateMap<Source, Destination>();
 });
 ```
