@@ -20,11 +20,6 @@ public class OrganizationProfile : Profile
   {
     //Put CreateMap... Etc.. here
   }
-
-  public override string ProfileName  
-  { 
-    get { return this.GetType().Name; } 
-  } 
 }
 ````
 
