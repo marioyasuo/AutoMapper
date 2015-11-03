@@ -45,6 +45,8 @@ In AutoMapper 4.0, the mapping plan for inheritance is pre-calculated during con
           .ForMember(o=>o.Id, m=>m.MapFrom(s=>s.OrderId));
     Mapper.CreateMap<MailOrder, MailOrderDto>()
           .ForMember(o=>o.Id, m=>m.MapFrom(s=>s.OrderId));
+
+    Mapper.Configuration.Seal(); // this is REQUIRED in AutoMapper 4.0 to make inheritance work
 ```
 # Mapping Configuration Inheritance in AutoMapper 2.0
 In AutoMapper 2.0, this becomes:
