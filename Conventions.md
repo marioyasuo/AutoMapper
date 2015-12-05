@@ -40,7 +40,7 @@ MapToAttribute is one of them which will match the property based on name provid
 ```
 public class Foo
 {
-    [MapToAttribute("SourceOfBar")]
+    [MapTo("SourceOfBar")]
     public int Bar { get; set; }
 }
 ```
