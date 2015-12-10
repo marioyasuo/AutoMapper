@@ -69,6 +69,8 @@ Mapper.CreateMap<OnlineOrder, OnlineOrderDto>()
     .IncludeBase<Order, OrderDto>();
 Mapper.CreateMap<MailOrder, MailOrderDto>()
     .IncludeBase<Order, OrderDto>();
+
+Mapper.Configuration.Seal(); // this is REQUIRED in AutoMapper 4.0 to make inheritance work
 ```
 ## Inheritance Mapping Priorities
 This introduces additional complexity because there are multiple ways a property can be mapped. The priority of these sources are as follows
