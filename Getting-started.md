@@ -15,7 +15,7 @@ AutoMapper will ignore null reference exceptions when mapping your source to you
 
 Once you have your types you can create a map for the two types using Mapper.Initialize and CreateMap. Mapper.Initialize should be called only once during startup.
 
-    Mapper.Initalize(cfg => cfg.CreateMap<Order, OrderDto>());
+    Mapper.Initialize(cfg => cfg.CreateMap<Order, OrderDto>());
 
 The type on the left is the source type, and the type on the right is the destination type.  To perform a mapping, use the Map method.
 
