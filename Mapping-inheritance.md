@@ -102,6 +102,8 @@ To demonstrate this, lets modify our classes shown above
     Mapper.CreateMap<OnlineOrder, OrderDto>();
     Mapper.CreateMap<MailOrder, OrderDto>();
 
+    Mapper.Configuration.Seal(); // this is REQUIRED in AutoMapper 4.0 to make inheritance work
+
     // Perform Mapping
     var order = new OnlineOrder { Referrer = "google" };
     var mapped = Mapper.Map(order, order.GetType(), typeof(OrderDto));
