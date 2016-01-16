@@ -29,6 +29,10 @@ Mapper.Initialize(cfg =>
 {
   Mapper.CreateMap<OrderLine, OrderLineDTO>()
     .ForMember(dto => dto.Item, conf => conf.MapFrom(ol => ol.Item.Name);
+  Mapper.CreateMap<OrderLineDTO, OrderLine>()
+    .ForMember(ol => ol.Item, conf => conf.MapFrom(dto => dto));
+  Mapper.CreateMap<OrderLineDTO, Item>()
+    .ForMember(i => i.Name, conf => conf.MapFrom(dto => dto.Item));
 });
 ```
 When mapping from DTO Expression
