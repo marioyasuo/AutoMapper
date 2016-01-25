@@ -18,7 +18,7 @@ public class OrganizationProfile : Profile
 {
   protected override void Configure() 
   {
-    //Put CreateMap... Etc.. here
+    //Use CreateMap... Etc.. here (methods with the same name as configuration methods)
   }
 }
 ````
