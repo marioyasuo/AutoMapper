@@ -58,23 +58,23 @@ Much like how Queryable Extensions can only support certain things that the LINQ
 # UseAsDataSource
 Mapping expressions to one another is a tedious and produces long ugly code.
 
-`UseAsDataSource().For<DTO>()` makes this translation clean by not having to explicitly map expressions.
+`UseAsDataSource(mapper).For<DTO>()` makes this translation clean by not having to explicitly map expressions.
 It also calls `Project().To<TDO>()` for you as well, where applicable.
 
 Using EntityFramework as an example
 
-`dataContext.OrderLines.UseAsDataSource().For<OrderLineDTO>().Where(dto => dto.Name.StartsWith("A"))`
+`dataContext.OrderLines.UseAsDataSource(mapper).For<OrderLineDTO>().Where(dto => dto.Name.StartsWith("A"))`
 
 Does the equivalent of 
 
 `dataContext.OrderLines.Where(ol => ol.Item.Name.StartsWith("A")).Project().To<OrderLineDTO>()`
 
 ### When Project().To() is not called
-Expression Translation work for all kinds of functions, including `Select` calls.  If `Select` is used after `UseAsDataSource()` and changes return type, then `Project().To<>()` won't be called and value with be returned instead using `Mapper.Map`.
+Expression Translation work for all kinds of functions, including `Select` calls.  If `Select` is used after `UseAsDataSource(mapper)` and changes return type, then `Project().To<>()` won't be called and value with be returned instead using `Mapper.Map`.
 
 Example:
 
-`dataContext.OrderLines.UseAsDataSource().For<OrderLineDTO>().Select(dto => dto.Name)`
+`dataContext.OrderLines.UseAsDataSource(mapper).For<OrderLineDTO>().Select(dto => dto.Name)`
 
 Does the equivalent of 
 
