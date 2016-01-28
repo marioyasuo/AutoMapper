@@ -11,66 +11,33 @@ Take:
     public class OnlineOrderDto : OrderDto { }
     public class MailOrderDto : OrderDto { }
 
-    Mapper.CreateMap<Order, OrderDto>()
+    var config = new MapperConfiguration(cfg => {
+    cfg.CreateMap<Order, OrderDto>()
           .Include<OnlineOrder, OnlineOrderDto>()
           .Include<MailOrder, MailOrderDto>();
-    Mapper.CreateMap<OnlineOrder, OnlineOrderDto>();
-    Mapper.CreateMap<MailOrder, MailOrderDto>();
-    Mapper.Configuration.Seal();
-
-    // Or
-    Mapper.Initialize(cfg => {
-        cfg.CreateMap<Order, OrderDto>()
-          .Include<OnlineOrder, OnlineOrderDto>()
-          .Include<MailOrder, MailOrderDto>();
-        cfg.CreateMap<OnlineOrder, OnlineOrderDto>();
-        cfg.CreateMap<MailOrder, MailOrderDto>();
+    cfg.CreateMap<OnlineOrder, OnlineOrderDto>();
+    cfg.CreateMap<MailOrder, MailOrderDto>();
     });
-
 
     // Perform Mapping
     var order = new OnlineOrder();
-    var mapped = Mapper.Map(order, order.GetType(), typeof(OrderDto));
+    var mapper = config.CreateMapper();
+    var mapped = mapper.Map(order, order.GetType(), typeof(OrderDto));
     Assert.IsType<OnlineOrderDto>(mapped);
 ```
 You will notice that because the mapped object is a OnlineOrder, AutoMapper has seen you have a more specific mapping for OnlineOrder than OrderDto, and automatically chosen that.
-The shortcoming of AutoMapper 1.1 was that any mapping configuration you made on the base mapping had to be recreated on each of the child mappings. This ends up with duplicated configuration and lots of extra mapping code.
-In AutoMapper 4.0, the mapping plan for inheritance is pre-calculated during configuration, so you need to either seal the configuration or use Initialize to ensure mapping inheritance works.
-```c#
-    Mapper.CreateMap<Order, OrderDto>()
-          .Include<OnlineOrder, OnlineOrderDto>()
-          .Include<MailOrder, MailOrderDto>()
-          .ForMember(o=>o.Id, m=>m.MapFrom(s=>s.OrderId));
-    Mapper.CreateMap<OnlineOrder, OnlineOrderDto>()
-          .ForMember(o=>o.Id, m=>m.MapFrom(s=>s.OrderId));
-    Mapper.CreateMap<MailOrder, MailOrderDto>()
-          .ForMember(o=>o.Id, m=>m.MapFrom(s=>s.OrderId));
-
-    Mapper.Configuration.Seal(); // this is REQUIRED in AutoMapper 4.0 to make inheritance work
-```
-# Mapping Configuration Inheritance in AutoMapper 2.0
-In AutoMapper 2.0, this becomes:
-```c#
-    Mapper.CreateMap<Order, OrderDto>()
-          .Include<OnlineOrder, OnlineOrderDto>()
-          .Include<MailOrder, MailOrderDto>()
-          .ForMember(o=>o.Id, m=>m.MapFrom(s=>s.OrderId));
-    Mapper.CreateMap<OnlineOrder, OnlineOrderDto>();
-    Mapper.CreateMap<MailOrder, MailOrderDto>();
-```
-Because we have defined the mapping for the base class, we no longer have to define it in the child mappings.
 
 # Specifying inheritance in derived classes
 Instead of configuring inheritance from the base class, you can specify inheritance from the derived classes:
 ```c#
-Mapper.CreateMap<Order, OrderDto>()
+var config = new MapperConfiguration(cfg => {
+cfg.CreateMap<Order, OrderDto>()
     .ForMember(o => o.Id, m => m.MapFrom(s => s.OrderId));
-Mapper.CreateMap<OnlineOrder, OnlineOrderDto>()
+cfg.CreateMap<OnlineOrder, OnlineOrderDto>()
     .IncludeBase<Order, OrderDto>();
-Mapper.CreateMap<MailOrder, MailOrderDto>()
+cfg.CreateMap<MailOrder, MailOrderDto>()
     .IncludeBase<Order, OrderDto>();
-
-Mapper.Configuration.Seal(); // this is REQUIRED in AutoMapper 4.0 to make inheritance work
+});
 ```
 ## Inheritance Mapping Priorities
 This introduces additional complexity because there are multiple ways a property can be mapped. The priority of these sources are as follows
@@ -97,18 +64,19 @@ To demonstrate this, lets modify our classes shown above
     }
 
     //Mappings
-    Mapper.CreateMap<Order, OrderDto>()
+    var config = new MapperConfiguration(cfg => {
+    cfg.CreateMap<Order, OrderDto>()
           .Include<OnlineOrder, OrderDto>()
           .Include<MailOrder, OrderDto>()
           .ForMember(o=>o.Referrer, m=>m.Ignore());
-    Mapper.CreateMap<OnlineOrder, OrderDto>();
-    Mapper.CreateMap<MailOrder, OrderDto>();
-
-    Mapper.Configuration.Seal(); // this is REQUIRED in AutoMapper 4.0 to make inheritance work
+    cfg.CreateMap<OnlineOrder, OrderDto>();
+    cfg.CreateMap<MailOrder, OrderDto>();
+    });
 
     // Perform Mapping
     var order = new OnlineOrder { Referrer = "google" };
-    var mapped = Mapper.Map(order, order.GetType(), typeof(OrderDto));
+    var mapper = config.CreateMapper();
+    var mapped = mapper.Map(order, order.GetType(), typeof(OrderDto));
     Assert.Equals("google", mapped.Referrer);
 ```
 Notice that in our mapping configuration, we have ignored `Referrer` (because it doesn't exist in the order base class), but convention has a higher priority than Ignored properties in the base class mappings, so the property still gets mapped.
