@@ -1,15 +1,15 @@
-## Initialization
+## Configuration
 
-Initialization is the preferred mode of configuring AutoMapper, and should be done once per AppDomain:
+Create a `MapperConfiguration` instance and initialize configuration via the constructor:
 
 ```csharp
-Mapper.Initialize(cfg => {
+var config = new MapperConfiguration(cfg => {
     cfg.CreateMap<Foo, Bar>();
     cfg.AddProfile<FooProfile>();
 });
 ```
 
-Mapping configuration is static and should not change/be modified.
+The `MappingConfiguration` instance can be stored statically, in a static field or in a dependency injection container. Once created it cannot change/be modified.
 
 ## Profile Instances
 can be used to organize AutoMapper Configuration
@@ -33,7 +33,7 @@ Mapper.Initialize(cfg => {
 ## Naming Conventions
 You can set the source and destination naming conventions
 ````csharp
-Mapper.Initialize(cfg => {
+var config = new MapperConfiguration(cfg => {
   cfg.SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
   cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
 });
@@ -72,7 +72,7 @@ public class Destination
 ```
 We want to replace the individual characters, and perhaps translate a word:
 ```c#
-Mapper.Initialize(c =>
+var config = new MapperConfiguration(c =>
 {
     c.ReplaceMemberName("Ä", "A");
     c.ReplaceMemberName("í", "i");
@@ -92,17 +92,17 @@ public class Dest {
     public int Value { get; set; }
     public int Value2 { get; set; }
 }
-Mapper.Initialize(cfg => {
+var config = new MapperConfiguration(cfg => {
     cfg.RecognizePrefix("frm");
     cfg.CreateMap<Source, Dest>();
 });
-Mapper.AssertConfigurationIsValid();
+config.AssertConfigurationIsValid();
 ```
 
 By default AutoMapper recognizes the prefix "Get", if you need to clear the prefix:
 
 ```c#
-Mapper.Initialize(cfg => {
+var config = new MapperConfiguration(cfg => {
     cfg.ClearPrefixes();
     cfg.RecognizePrefixes("tmp");
 });
@@ -113,7 +113,7 @@ Mapper.Initialize(cfg => {
 By default, AutoMapper tries to map every public property/field. You can filter out properties/fields with the property/field filters:
 
 ```c#
-Mapper.Initialize(cfg =>
+var config = new MapperConfiguration(cfg =>
 {
 	// don't map any fields
 	cfg.ShouldMapField = fi => false;
@@ -128,7 +128,7 @@ Mapper.Initialize(cfg =>
 
 By default, AutoMapper only recognizes public members. It can map to private setters, but will skip internal/private methods and properties if the entire property is private/internal. To instruct AutoMapper to recognize members with other visibilities, override the default filters ShouldMapField and/or ShouldMapProperty :
 ```c#
-Mapper.Initialize(cfg =>
+var config = new MapperConfiguration(cfg =>
 {
     // map properties with public or internal getters
     cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
