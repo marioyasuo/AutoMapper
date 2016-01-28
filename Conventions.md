@@ -2,13 +2,19 @@
 
 Conditional Object Mappers make new type maps based on conditional between the source and the destination type.
 
-`Mapper.Initialize(cfg => { cfg.AddConditionalObjectMapper().Where((s, d) => s.Name == d.Name + "Dto"); });`
+```
+var config = new MapperConfiguration(cfg => {
+    cfg.AddConditionalObjectMapper().Where((s, d) => s.Name == d.Name + "Dto");
+});
+```
 
 # Member Configuration
 
 Member Configuration is like [Configuration](https://github.com/AutoMapper/AutoMapper/wiki/Configuration) but you can have complete control on what is and isn't used.
 
-`Mapper.Initialize(cfg => { cfg.AddMemberConfiguration(); });`
+```
+var config = new MapperConfiguration(cfg => { cfg.AddMemberConfiguration(); });
+```
 
 AddMemberConfiguration() starts off with a blank slate.  Everything that applies in Configuration by default is gone to start with.
 
