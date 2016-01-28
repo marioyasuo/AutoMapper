@@ -26,80 +26,24 @@ We _could_ simply flatten the OuterSource.Inner.OtherValue to one InnerOtherValu
 ```
 In that case, we would need to configure the additional source/destination type mappings:
 ```csharp
-    Mapper.CreateMap<OuterSource, OuterDest>();
-    Mapper.CreateMap<InnerSource, InnerDest>();
-    Mapper.AssertConfigurationIsValid();
+    var config = new MapperConfiguration(cfg => {
+        cfg.CreateMap<OuterSource, OuterDest>();
+        cfg.CreateMap<InnerSource, InnerDest>();
+    });
+    config.AssertConfigurationIsValid();
     
     var source = new OuterSource
     	{
     		Value = 5,
     		Inner = new InnerSource {OtherValue = 15}
     	};
-    
-    var dest = Mapper.Map<OuterSource, OuterDest>(source);
+    var mapper = config.CreateMapper();
+    var dest = mapper.Map<OuterSource, OuterDest>(source);
     
     dest.Value.ShouldEqual(5);
     dest.Inner.ShouldNotBeNull();
     dest.Inner.OtherValue.ShouldEqual(15);
 
-```
-Maybe we want to be free from creating so many nested mappings,Here is a simple way to resolve：
-```
-        /// <summary>
-        /// 递归创建类型间的映射关系 (Recursively create mappings between types)
-        ///created by cqwang
-        /// </summary>
-        /// <param name="sourceType"></param>
-        /// <param name="destinationType"></param>
-        public static void CreateNestedMappers(Type sourceType, Type destinationType)
-        {
-            PropertyInfo[] sourceProperties = sourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            PropertyInfo[] destinationProperties = destinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            foreach (var destinationProperty in destinationProperties)
-            {
-                Type destinationPropertyType = destinationProperty.PropertyType;
-                if (Filter(destinationPropertyType))
-                    continue;
-
-                PropertyInfo sourceProperty = sourceProperties.FirstOrDefault(prop => NameMatches(prop.Name, destinationProperty.Name));
-                if (sourceProperty == null)
-                    continue;
-
-                Type sourcePropertyType=sourceProperty.PropertyType;
-                if (destinationPropertyType.IsGenericType)
-                {
-                    Type destinationGenericType = destinationPropertyType.GetGenericArguments()[0];
-                    if (Filter(destinationGenericType))
-                        continue;
-
-                    Type sourceGenericType = sourcePropertyType.GetGenericArguments()[0];
-                    CreateMappers(sourceGenericType, destinationGenericType);
-                }
-                else
-                {
-                    CreateMappers(sourcePropertyType, destinationPropertyType);
-                }
-            }
-
-            Mapper.CreateMap(sourceType, destinationType);
-        }
-
-        /// <summary>
-        /// 过滤 (Filter)
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        static bool Filter(Type type)
-        {
-            return type.IsPrimitive || NoPrimitiveTypes.Contains(type.Name);
-        }
-
-        static readonly HashSet<string> NoPrimitiveTypes = new HashSet<string>() { "String", "DateTime", "Decimal", "TimeSpan" };
-
-        private static bool NameMatches(string memberName, string nameToMatch)
-        {
-            return String.Compare(memberName, nameToMatch, StringComparison.OrdinalIgnoreCase) == 0;
-        }
 ```
 A few things to note here:
 
