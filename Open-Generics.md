@@ -25,5 +25,6 @@ AutoMapper will skip open generic type maps during configuration validation, sin
 You can also create an open generic type converter:
 
 ```c#
-var config = new MapperConfiguration(cfg => cfg.CreateMap(typeof(Source<>), typeof(Destination<>)).ConvertUsing(typeof(Converter<>)));
+var config = new MapperConfiguration(cfg => 
+   cfg.CreateMap(typeof(Source<>), typeof(Destination<>)).ConvertUsing(typeof(Converter<>)));
 ```
