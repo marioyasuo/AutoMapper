@@ -20,3 +20,5 @@ dynamic foo2 = mapper.Map<MyDynamicObject>(result);
 foo2.Bar.ShouldEqual(5);
 foo2.Baz.ShouldEqual(6);
 ```
+
+Similarly you can map straight from dictionaries to objects, AutoMapper will line up the keys with property names.
