@@ -43,9 +43,10 @@ Once we have our IValueResolver implementation, we'll need to tell AutoMapper to
 In the below example, we'll use the first option, telling AutoMapper the custom resolver type through generics:
 
 ```c#
-    Mapper.CreateMap<Source, Destination>()
-    	.ForMember(dest => dest.Total, opt => opt.ResolveUsing<CustomResolver>());
-    Mapper.AssertConfigurationIsValid();
+    var config = new MapperConfiguration(cfg => 
+       cfg.CreateMap<Source, Destination>()
+    	 .ForMember(dest => dest.Total, opt => opt.ResolveUsing<CustomResolver>());
+    config.AssertConfigurationIsValid();
     
     var source = new Source
     	{
@@ -53,7 +54,8 @@ In the below example, we'll use the first option, telling AutoMapper the custom 
     		Value2 = 7
     	};
     
-    var result = Mapper.Map<Source, Destination>(source);
+    var mapper = config.CreateMapper();
+    var result = mapper.Map<Source, Destination>(source);
     
     result.Total.ShouldEqual(12);
 ```
@@ -65,7 +67,7 @@ Because we only supplied the type of the custom resolver to AutoMapper, the mapp
 If we don't want AutoMapper to use reflection to create the instance, we can either supply the instance directly, or use the ConstructedBy method to supply a custom constructor method:
 
 ```c#
-    Mapper.CreateMap<Source, Destination>()
+    var config = new MapperConfiguration(cfg => cfg.CreateMap<Source, Destination>()
     	.ForMember(dest => dest.Total, 
     		opt => opt.ResolveUsing<CustomResolver>().ConstructedBy(() => new CustomResolver())
     	);
@@ -75,12 +77,14 @@ AutoMapper will execute this callback function instead of using reflection durin
 ## Customizing the source value supplied to the resolver
 By default, AutoMapper passes the source object to the resolver. This limits the reusability of resolvers, since the resolver is coupled to the source type. If, however, we supply a common resolver across multiple types, we configure AutoMapper to redirect the source value supplied to the resolver:
 ```c#
-Mapper.CreateMap<Source, Destination>()
+var config = new MapperConfiguration(cfg => {
+cfg.CreateMap<Source, Destination>()
     .ForMember(dest => dest.Total,
         opt => opt.ResolveUsing<CustomResolver>().FromMember(src => src.SubTotal));
-Mapper.CreateMap<OtherSource, OtherDest>()
+cfg.CreateMap<OtherSource, OtherDest>()
     .ForMember(dest => dest.OtherTotal,
         opt => opt.ResolveUsing<CustomResolver>().FromMember(src => src.OtherSubTotal));
+});
 
 public class CustomResolver : ValueResolver<decimal, decimal> {
 // logic here
