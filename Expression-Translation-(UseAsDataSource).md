@@ -25,20 +25,20 @@ public class OrderLineDTO
   public decimal Quantity { get; set; }
 }
 
-Mapper.Initialize(cfg => 
+var config = new MapperConfiguration(cfg => 
 {
-  Mapper.CreateMap<OrderLine, OrderLineDTO>()
+  cfg.CreateMap<OrderLine, OrderLineDTO>()
     .ForMember(dto => dto.Item, conf => conf.MapFrom(ol => ol.Item.Name);
-  Mapper.CreateMap<OrderLineDTO, OrderLine>()
+  cfg.CreateMap<OrderLineDTO, OrderLine>()
     .ForMember(ol => ol.Item, conf => conf.MapFrom(dto => dto));
-  Mapper.CreateMap<OrderLineDTO, Item>()
+  cfg.CreateMap<OrderLineDTO, Item>()
     .ForMember(i => i.Name, conf => conf.MapFrom(dto => dto.Item));
 });
 ```
 When mapping from DTO Expression
 ```
 Expression<Func<OrderLineDTO, bool>> dtoExpression = dto=> dto.Item.StartsWith("A");
-var expression = Mapper.Map<Func<Expression<OrderLine, bool>>>(dtoExpression);
+var expression = mapper.Map<Func<Expression<OrderLine, bool>>>(dtoExpression);
 ```
 Expression will bet translated to `ol => ol.Item.Name.StartsWith("A")`
 
@@ -47,7 +47,7 @@ Automapper knows `dto.Item` is mapped to `ol.Item.Name` so it substituted it for
 Expression translation can work on expressions of collections as well.
 ```
 Expression<Func<IQueryable<OrderLineDTO>,IQueryable<OrderLineDTO>>> dtoExpression = dtos => dtos.Where(dto => dto.Quantity > 5).OrderBy(dto => dto.Quantity);
-var expression = Mapper.Map<Expression<Func<IQueryable<OrderLine>,IQueryable<OrderLine>>>(dtoExpression);
+var expression = mapper.Map<Expression<Func<IQueryable<OrderLine>,IQueryable<OrderLine>>>(dtoExpression);
 ```
 Resulting in `ols => ols.Where(ol => ol.Quantity > 5).OrderBy(ol => ol.Quantity)`
 
