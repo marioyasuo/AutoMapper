@@ -9,13 +9,13 @@ public class Destination<T> {
 }
 
 // Create the mapping
-Mapper.CreateMap(typeof(Source<>), typeof(Destination<>));
+var config = new MapperConfiguration(cfg => cfg.CreateMap(typeof(Source<>), typeof(Destination<>)));
 ```
 You don't need to create maps for closed generic types. AutoMapper will apply any configuration from the open generic mapping to the closed mapping at runtime:
 ```
 var source = new Source<int> { Value = 10 };
 
-var dest = Mapper.Map<Source<int>, Destination<int>>(source);
+var dest = mapper.Map<Source<int>, Destination<int>>(source);
 
 dest.Value.ShouldEqual(10);
 ```
@@ -25,5 +25,5 @@ AutoMapper will skip open generic type maps during configuration validation, sin
 You can also create an open generic type converter:
 
 ```c#
-Mapper.CreateMap(typeof(Source<>), typeof(Destination<>)).ConvertUsing(typeof(Converter<>));
+var config = new MapperConfiguration(cfg => cfg.CreateMap(typeof(Source<>), typeof(Destination<>)).ConvertUsing(typeof(Converter<>)));
 ```
