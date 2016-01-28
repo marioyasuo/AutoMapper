@@ -12,7 +12,8 @@ class Bar {
 ````
 In the following mapping the property baz will only be mapped if it is greater than or equal to 0 in the source object.
 ````
-Mapper.CreateMap<Foo,Bar>()
-  .ForMember(dest => dest.baz, opt => opt.Condition(src => (src.baz >= 0))); 
-
+var config = new MapperConfiguration(cfg => {
+  cfg.CreateMap<Foo,Bar>()
+    .ForMember(dest => dest.baz, opt => opt.Condition(src => (src.baz >= 0))); 
+});
 ````
