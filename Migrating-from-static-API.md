@@ -31,7 +31,7 @@ MvcApplication.MapperConfiguration = new MapperConfiguration(cfg => {
     cfg.CreateMap<Source, Dest>();
 });
 
-MvcApplication.Mapper = config.CreateMapper();
+MvcApplication.Mapper = MvcApplication.MapperConfiguration.CreateMapper();
 
 public ActionResult Index(int id) {
     var product = dbContext.Products.Where(p => p.Id == id).SingleOrDefault();
