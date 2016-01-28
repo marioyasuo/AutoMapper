@@ -13,13 +13,16 @@ First, you need both a source and destination type to work with.  The destinatio
 
 AutoMapper will ignore null reference exceptions when mapping your source to your target. This is by design. If you don't like this approach, you can combine AutoMapper's approach with [[Custom-value-resolvers]] if needed.
 
-Once you have your types you can create a map for the two types using Mapper.Initialize and CreateMap. Mapper.Initialize should be called only once during startup.
+Once you have your types you can create a map for the two types using a `MapperConfiguration` instance and CreateMap. You only need one `MapperConfiguration` instance typically per AppDomain and should be instantiated during startup.
 
-    Mapper.Initialize(cfg => cfg.CreateMap<Order, OrderDto>());
+    var config = new MapperConfiguration(cfg => cfg.CreateMap<Order, OrderDto>());
 
-The type on the left is the source type, and the type on the right is the destination type.  To perform a mapping, use the Map method.
+The type on the left is the source type, and the type on the right is the destination type.  To perform a mapping, create an IMapper use the CreateMapper method.
 
-    OrderDto dto = Mapper.Map<OrderDto>(order);
+    var mapper = config.CreateMapper();
+    OrderDto dto = mapper.Map<OrderDto>(order);
+
+Most applications can use dependency inject to inject the created `IMapper` instance.
 
 AutoMapper also has non-generic versions of these methods, for those cases where you might not know the type at compile time.
 
@@ -32,13 +35,13 @@ If you're using the static Mapper method, configuration should only happen once 
 To test your mappings, you need to create a test that does two things:
 
 * Call your bootstrapper class to create all the mappings
-* Call Mapper.AssertConfigurationIsValid
+* Call MapperConfiguration.AssertConfigurationIsValid
 
 Here's an example:
 
-    AutoMapperConfiguration.Configure();
+    var config = AutoMapperConfiguration.Configure();
     
-    Mapper.AssertConfigurationIsValid();
+    config.AssertConfigurationIsValid();
 
 
 ## Can I see a demo?
