@@ -9,7 +9,7 @@ var config = new MapperConfiguration(cfg => {
 });
 ```
 
-The `MappingConfiguration` instance can be stored statically, in a static field or in a dependency injection container. Once created it cannot change/be modified.
+The `MapperConfiguration` instance can be stored statically, in a static field or in a dependency injection container. Once created it cannot change/be modified.
 
 ## Profile Instances
 can be used to organize AutoMapper Configuration
