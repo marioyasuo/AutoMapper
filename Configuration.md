@@ -24,11 +24,10 @@ public class OrganizationProfile : Profile
 ````
 
 Initialize the profile like so 
-```` csharp
-Mapper.Initialize(cfg => {
-  cfg.AddProfile<OrganizationProfile>();
-});
+````csharp
+var mapper = config.CreateMapper();
 ````
+and store the `mapper` instance statically as needed.
 
 ## Naming Conventions
 You can set the source and destination naming conventions
