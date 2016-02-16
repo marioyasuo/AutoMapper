@@ -23,6 +23,13 @@ public class OrganizationProfile : Profile
 }
 ````
 
+You can then add profiles to the main `MapperConfiguration` in a number of ways:
+
+```
+cfg.AddProfile<OrganizationProfile>();
+cfg.AddProfile(new OrganizationProfile());
+```
+
 Initialize the profile like so 
 ````csharp
 var mapper = config.CreateMapper();
