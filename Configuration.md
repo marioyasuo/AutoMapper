@@ -54,9 +54,9 @@ public class OrganizationProfile : Profile
 {
   protected override void Configure() 
   {
-    //Put your Mapper.CreateMap... Etc.. here
     SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
     DestinationMemberNamingConvention = new PascalCaseNamingConvention();
+    //Put your Mapper.CreateMap... Etc.. here
   }
 }
 ````
