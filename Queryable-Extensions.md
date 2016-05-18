@@ -34,7 +34,7 @@ And the following DTO:
 ```
 You can use the Queryable Extensions like so:
 ```
-    static MapperConfiguration Config = new MapperConfiguration(cfg => 
+    Mapper.Initialize(cfg => 
         cfg.CreateMap<OrderLine, OrderLineDTO>()
         .ForMember(dto => dto.Item, conf => conf.MapFrom(ol => ol.Item.Name)));
 
@@ -43,7 +43,7 @@ You can use the Queryable Extensions like so:
       using (var context = new orderEntities())
       {
         return context.OrderLines.Where(ol => ol.OrderId == orderId)
-                 .ProjectTo<OrderLineDTO>(Config).ToList();
+                 .ProjectTo<OrderLineDTO>().ToList();
       }
     }
 ```
@@ -80,7 +80,7 @@ This map through AutoMapper will result in a SELECT N+1 problem, as each child `
 
 In the case where members names don't line up, or you want to create calculated property, you can use MapFrom (and not ResolveUsing) to supply a custom expression for a destination member:
 ```
-    var config = new MapperConfiguration(cfg => cfg.CreateMap<Customer, CustomerDto>()
+    Mapper.Initialize(cfg => cfg.CreateMap<Customer, CustomerDto>()
         .ForMember(d => d.FullName, opt => opt.MapFrom(c => c.FirstName + " " + c.LastName))
         .ForMember(d => d.TotalContacts, opt => opt.MapFrom(c => c.Contacts.Count()));
 ```
@@ -124,12 +124,12 @@ orders[0].OrderType.ShouldEqual("Online");
 
 In some scenarios, such as OData, a generic DTO is returned through an IQueryable controller action. Without explicit instructions, AutoMapper will expand all members in the result. To control which members are expanded during projection, pass in the members you want to explicitly expand:
 ```c#
-dbContext.Orders.ProjectTo<OrderDto>(Config
+dbContext.Orders.ProjectTo<OrderDto>(
     parameters = null,
     dest => dest.Customer,
     dest => dest.LineItems);
 // or string-based
-dbContext.Orders.ProjectTo<OrderDto>(Config
+dbContext.Orders.ProjectTo<OrderDto>(
     parameters = null,
     "Customer",
     "LineItems");
