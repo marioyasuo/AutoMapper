@@ -11,7 +11,7 @@ Take:
     public class OnlineOrderDto : OrderDto { }
     public class MailOrderDto : OrderDto { }
 
-    var config = new MapperConfiguration(cfg => {
+    Mapper.Initialize(cfg => {
     cfg.CreateMap<Order, OrderDto>()
           .Include<OnlineOrder, OnlineOrderDto>()
           .Include<MailOrder, MailOrderDto>();
@@ -21,8 +21,7 @@ Take:
 
     // Perform Mapping
     var order = new OnlineOrder();
-    var mapper = config.CreateMapper();
-    var mapped = mapper.Map(order, order.GetType(), typeof(OrderDto));
+    var mapped = Mapper.Map(order, order.GetType(), typeof(OrderDto));
     Assert.IsType<OnlineOrderDto>(mapped);
 ```
 You will notice that because the mapped object is a OnlineOrder, AutoMapper has seen you have a more specific mapping for OnlineOrder than OrderDto, and automatically chosen that.
@@ -30,7 +29,7 @@ You will notice that because the mapped object is a OnlineOrder, AutoMapper has 
 # Specifying inheritance in derived classes
 Instead of configuring inheritance from the base class, you can specify inheritance from the derived classes:
 ```c#
-var config = new MapperConfiguration(cfg => {
+Mapper.Initialize(cfg => {
 cfg.CreateMap<Order, OrderDto>()
     .ForMember(o => o.Id, m => m.MapFrom(s => s.OrderId));
 cfg.CreateMap<OnlineOrder, OnlineOrderDto>()
@@ -64,7 +63,7 @@ To demonstrate this, lets modify our classes shown above
     }
 
     //Mappings
-    var config = new MapperConfiguration(cfg => {
+    Mapper.Initialize(cfg => {
     cfg.CreateMap<Order, OrderDto>()
           .Include<OnlineOrder, OrderDto>()
           .Include<MailOrder, OrderDto>()
@@ -75,8 +74,7 @@ To demonstrate this, lets modify our classes shown above
 
     // Perform Mapping
     var order = new OnlineOrder { Referrer = "google" };
-    var mapper = config.CreateMapper();
-    var mapped = mapper.Map(order, order.GetType(), typeof(OrderDto));
+    var mapped = Mapper.Map(order, order.GetType(), typeof(OrderDto));
     Assert.Equals("google", mapped.Referrer);
 ```
 Notice that in our mapping configuration, we have ignored `Referrer` (because it doesn't exist in the order base class), but convention has a higher priority than Ignored properties in the base class mappings, so the property still gets mapped.
