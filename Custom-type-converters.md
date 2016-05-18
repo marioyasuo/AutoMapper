@@ -26,9 +26,9 @@ If we were to try and map these two types as-is, AutoMapper would throw an excep
 ```
 The first option is simply any function that takes a source and returns a destination.  This works for simple cases, but becomes unwieldy for larger ones.  In more difficult cases, we can create a custom ITypeConverter&lt;TSource, TDestination&gt;:
 ```c#
-    public interface ITypeConverter<TSource, TDestination>
+    public interface ITypeConverter<in TSource, out TDestination>
     {
-    	TDestination Convert(ResolutionContext context);
+    	TDestination Convert(TSource source, ResolutionContext context);
     }
 ```
 And supply AutoMapper with either an instance of a custom type converter, or simply the type, which AutoMapper will instantiate at run time.  The mapping configuration for our above source/destination types then becomes:
@@ -36,13 +36,13 @@ And supply AutoMapper with either an instance of a custom type converter, or sim
     [Test]
     public void Example()
     {
-        var config = new MapperConfiguration(cfg => {
+        Mapper.Initialize(cfg => {
           cfg.CreateMap<string, int>().ConvertUsing(Convert.ToInt32);
           cfg.CreateMap<string, DateTime>().ConvertUsing(new DateTimeTypeConverter());
           cfg.CreateMap<string, Type>().ConvertUsing<TypeTypeConverter>();
           cfg.CreateMap<Source, Destination>();
         });
-        config.AssertConfigurationIsValid();
+        Mapper.AssertConfigurationIsValid();
     
         var source = new Source
         {
@@ -51,22 +51,21 @@ And supply AutoMapper with either an instance of a custom type converter, or sim
             Value3 = "AutoMapperSamples.GlobalTypeConverters.GlobalTypeConverters+Destination"
         };
         
-        var mapper = config.CreateMapper();
-        Destination result = mapper.Map<Source, Destination>(source);
+        Destination result = Mapper.Map<Source, Destination>(source);
         result.Value3.ShouldEqual(typeof (Destination));
     }
     
     public class DateTimeTypeConverter : ITypeConverter<string, DateTime>
     {
-        public DateTime Convert(ResolutionContext context)
+        public DateTime Convert(string source, ResolutionContext context)
         {
-            return System.Convert.ToDateTime(context.SourceValue);
+            return System.Convert.ToDateTime(source);
         }
     }
     
     public class TypeTypeConverter : ITypeConverter<string, Type>
     {
-        public Type Convert(ResolutionContext context)
+        public Type Convert(string source, ResolutionContext context)
         {
               return context.SourceType;
         }
