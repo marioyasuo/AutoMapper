@@ -12,7 +12,7 @@ AutoMapper only requires configuration of element types, not of any array or lis
 ```
 All the basic generic collection types are supported:
 ```csharp
-    var config = new MapperConfiguration(cfg => cfg.CreateMap<Source, Destination>());
+    Mapper.Initialize(cfg => cfg.CreateMap<Source, Destination>());
     
     var sources = new[]
     	{
@@ -21,12 +21,11 @@ All the basic generic collection types are supported:
     		new Source { Value = 7 }
     	};
     
-    var mapper = config.CreateMapper();
-    IEnumerable<Destination> ienumerableDest = mapper.Map<Source[], IEnumerable<Destination>>(sources);
-    ICollection<Destination> icollectionDest = mapper.Map<Source[], ICollection<Destination>>(sources);
-    IList<Destination> ilistDest = mapper.Map<Source[], IList<Destination>>(sources);
-    List<Destination> listDest = mapper.Map<Source[], List<Destination>>(sources);
-    Destination[] arrayDest = mapper.Map<Source[], Destination[]>(sources);
+    IEnumerable<Destination> ienumerableDest = Mapper.Map<Source[], IEnumerable<Destination>>(sources);
+    ICollection<Destination> icollectionDest = <apper.Map<Source[], ICollection<Destination>>(sources);
+    IList<Destination> ilistDest = Mapper.Map<Source[], IList<Destination>>(sources);
+    List<Destination> listDest = Mapper.Map<Source[], List<Destination>>(sources);
+    Destination[] arrayDest = Mapper.Map<Source[], Destination[]>(sources);
 ```
 To be specific, the source collection types supported include:
 
@@ -66,7 +65,7 @@ Many times, we might have a hierarchy of types in both our source and destinatio
 ```
 AutoMapper still requires explicit configuration for child mappings, as AutoMapper cannot "guess" which specific child destination mapping to use.  Here is an example of the above types:
 ```csharp
-    var config = new MapperConfiguration(c=> {
+    Mapper.Initialize(c=> {
         c.CreateMap<ParentSource, ParentDestination>()
     	     .Include<ChildSource, ChildDestination>();
         c.CreateMap<ChildSource, ChildDestination>();
@@ -78,8 +77,7 @@ AutoMapper still requires explicit configuration for child mappings, as AutoMapp
     		new ParentSource()
     	};
     
-    var mapper = config.CreateMapper();
-    var destinations = mapper.Map<ParentSource[], ParentDestination[]>(sources);
+    var destinations = Mapper.Map<ParentSource[], ParentDestination[]>(sources);
     
     destinations[0].ShouldBeInstanceOf<ParentDestination>();
     destinations[1].ShouldBeInstanceOf<ChildDestination>();
