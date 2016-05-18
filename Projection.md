@@ -27,15 +27,14 @@ Because the names of the destination properties do not exactly match the source 
     	};
     
     // Configure AutoMapper
-    var config = new MapperConfiguration(cfg => 
+    Mapper.Initialize(cfg => 
       cfg.CreateMap<CalendarEvent, CalendarEventForm>()
     	.ForMember(dest => dest.EventDate, opt => opt.MapFrom(src => src.Date.Date))
     	.ForMember(dest => dest.EventHour, opt => opt.MapFrom(src => src.Date.Hour))
     	.ForMember(dest => dest.EventMinute, opt => opt.MapFrom(src => src.Date.Minute)));
     
     // Perform mapping
-    var mapper = config.CreateMapper();
-    CalendarEventForm form = mapper.Map<CalendarEvent, CalendarEventForm>(calendarEvent);
+    CalendarEventForm form = Mapper.Map<CalendarEvent, CalendarEventForm>(calendarEvent);
     
     form.EventDate.ShouldEqual(new DateTime(2008, 12, 15));
     form.EventHour.ShouldEqual(20);
