@@ -13,7 +13,7 @@ public class SourceDto {
         get { return _value; }
     }
 }
-var config = new MapperConfiguration(cfg => cfg.CreateMap<Source, SourceDto>());
+Mapper.Initialize(cfg => cfg.CreateMap<Source, SourceDto>());
 ```
 
 If the destination constructor parameter names don't match, you can modify them at config time:
@@ -32,7 +32,7 @@ public class SourceDto {
         get { return _value; }
     }
 }
-var config = new MapperConfiguration(cfg => 
+Mapper.Initialize(cfg => 
   cfg.CreateMap<Source, SourceDto>()
     .ForCtorParam("valueParamSomeOtherName", opt => opt.MapFrom(src => src.Value))
 );
