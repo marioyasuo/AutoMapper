@@ -16,20 +16,19 @@ Although AutoMapper covers quite a few destination member mapping scenarios, the
 For whatever reason, we want Total to be the sum of the source Value properties.  For some other reason, we can't or shouldn't put this logic on our Source type.  To supply a custom value resolver, we'll need to first create a type that implements IValueResolver:
 
 ```c#
-    public interface IValueResolver
+    public interface IValueResolver<in TSource, out TMember>
     {
-    	ResolutionResult Resolve(ResolutionResult source);
+    	TMember Resolve(TSource source, ResolutionResult source);
     }
 ```
 
-The ResolutionContext contains all of the contextual information for the current resolution operation, such as source type, destination type, source value and so on.  For most scenarios, we won't need this more advanced interface.  Instead, we can derive from the ValueResolver&lt;TSource, TDestination&gt; abstract class:
-
+The ResolutionContext contains all of the contextual information for the current resolution operation, such as source type, destination type, source value and so on.  An example implementation:
 ```c#
-    public class CustomResolver : ValueResolver<Source, int>
+    public class CustomResolver : IValueResolver<Source, int>
     {
-    	protected override int ResolveCore(Source source)
+    	public int Resolve(Source source, ResolutionContext context)
     	{
-    		return source.Value1 + source.Value2;
+            return source.Value1 + source.Value2;
     	}
     }
 ```
@@ -43,10 +42,10 @@ Once we have our IValueResolver implementation, we'll need to tell AutoMapper to
 In the below example, we'll use the first option, telling AutoMapper the custom resolver type through generics:
 
 ```c#
-    var config = new MapperConfiguration(cfg => 
+    Mapper.Initialize(cfg => 
        cfg.CreateMap<Source, Destination>()
     	 .ForMember(dest => dest.Total, opt => opt.ResolveUsing<CustomResolver>());
-    config.AssertConfigurationIsValid();
+    Mapper.AssertConfigurationIsValid();
     
     var source = new Source
     	{
@@ -54,8 +53,7 @@ In the below example, we'll use the first option, telling AutoMapper the custom 
     		Value2 = 7
     	};
     
-    var mapper = config.CreateMapper();
-    var result = mapper.Map<Source, Destination>(source);
+    var result = Mapper.Map<Source, Destination>(source);
     
     result.Total.ShouldEqual(12);
 ```
@@ -67,7 +65,7 @@ Because we only supplied the type of the custom resolver to AutoMapper, the mapp
 If we don't want AutoMapper to use reflection to create the instance, we can either supply the instance directly, or use the ConstructedBy method to supply a custom constructor method:
 
 ```c#
-    var config = new MapperConfiguration(cfg => cfg.CreateMap<Source, Destination>()
+    Mapper.Initialize(cfg => cfg.CreateMap<Source, Destination>()
     	.ForMember(dest => dest.Total, 
     		opt => opt.ResolveUsing<CustomResolver>().ConstructedBy(() => new CustomResolver())
     	);
@@ -77,16 +75,16 @@ AutoMapper will execute this callback function instead of using reflection durin
 ## Customizing the source value supplied to the resolver
 By default, AutoMapper passes the source object to the resolver. This limits the reusability of resolvers, since the resolver is coupled to the source type. If, however, we supply a common resolver across multiple types, we configure AutoMapper to redirect the source value supplied to the resolver:
 ```c#
-var config = new MapperConfiguration(cfg => {
+Mapper.Initialize(cfg => {
 cfg.CreateMap<Source, Destination>()
     .ForMember(dest => dest.Total,
-        opt => opt.ResolveUsing<CustomResolver>().FromMember(src => src.SubTotal));
+        opt => opt.ResolveUsing<CustomResolver, decimal>(src => src.SubTotal));
 cfg.CreateMap<OtherSource, OtherDest>()
     .ForMember(dest => dest.OtherTotal,
-        opt => opt.ResolveUsing<CustomResolver>().FromMember(src => src.OtherSubTotal));
+        opt => opt.ResolveUsing<CustomResolver, decimal>(src => src.OtherSubTotal));
 });
 
-public class CustomResolver : ValueResolver<decimal, decimal> {
+public class CustomResolver : IValueResolver<decimal, decimal> {
 // logic here
 }
 ```
