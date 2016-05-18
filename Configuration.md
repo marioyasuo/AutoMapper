@@ -11,12 +11,21 @@ var config = new MapperConfiguration(cfg => {
 
 The `MapperConfiguration` instance can be stored statically, in a static field or in a dependency injection container. Once created it cannot change/be modified.
 
+Alternatively, you can use the static Mapper instance to initialize AutoMapper:
+
+```csharp
+Mapper.Initialize(cfg => {
+    cfg.CreateMap<Foo, Bar>();
+    cfg.AddProfile<FooProfile>();
+});
+```
+
 ## Profile Instances
 can be used to organize AutoMapper Configuration
 ````csharp
 public class OrganizationProfile : Profile 
 {
-  protected override void Configure() 
+  public OrganizationProfile() 
   {
     CreateMap<Foo, FooDto>();
     //Use CreateMap... Etc.. here (Profile methods are the same as configuration methods)
@@ -35,12 +44,12 @@ Initialize the profile like so
 ````csharp
 var mapper = config.CreateMapper();
 ````
-and store the `mapper` instance statically as needed.
+and store the `mapper` instance statically as needed, or use the Mapper instance.
 
 ## Naming Conventions
 You can set the source and destination naming conventions
 ````csharp
-var config = new MapperConfiguration(cfg => {
+Mapper.Initialize(cfg => {
   cfg.SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
   cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
 });
@@ -52,11 +61,11 @@ You can also set this at a per profile level
 ````csharp
 public class OrganizationProfile : Profile 
 {
-  protected override void Configure() 
+  public OrganizationProfile() 
   {
     SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
     DestinationMemberNamingConvention = new PascalCaseNamingConvention();
-    //Put your Mapper.CreateMap... Etc.. here
+    //Put your CreateMap... Etc.. here
   }
 }
 ````
@@ -79,7 +88,7 @@ public class Destination
 ```
 We want to replace the individual characters, and perhaps translate a word:
 ```c#
-var config = new MapperConfiguration(c =>
+Mapper.Initialize(c =>
 {
     c.ReplaceMemberName("Ä", "A");
     c.ReplaceMemberName("í", "i");
@@ -99,17 +108,17 @@ public class Dest {
     public int Value { get; set; }
     public int Value2 { get; set; }
 }
-var config = new MapperConfiguration(cfg => {
+Mapper.Initialize(cfg => {
     cfg.RecognizePrefix("frm");
     cfg.CreateMap<Source, Dest>();
 });
-config.AssertConfigurationIsValid();
+Mapper.AssertConfigurationIsValid();
 ```
 
 By default AutoMapper recognizes the prefix "Get", if you need to clear the prefix:
 
 ```c#
-var config = new MapperConfiguration(cfg => {
+Mapper.Initialize(cfg => {
     cfg.ClearPrefixes();
     cfg.RecognizePrefixes("tmp");
 });
@@ -120,7 +129,7 @@ var config = new MapperConfiguration(cfg => {
 By default, AutoMapper tries to map every public property/field. You can filter out properties/fields with the property/field filters:
 
 ```c#
-var config = new MapperConfiguration(cfg =>
+Mapper.Initialize(cfg =>
 {
 	// don't map any fields
 	cfg.ShouldMapField = fi => false;
@@ -135,7 +144,7 @@ var config = new MapperConfiguration(cfg =>
 
 By default, AutoMapper only recognizes public members. It can map to private setters, but will skip internal/private methods and properties if the entire property is private/internal. To instruct AutoMapper to recognize members with other visibilities, override the default filters ShouldMapField and/or ShouldMapProperty :
 ```c#
-var config = new MapperConfiguration(cfg =>
+Mapper.Initialize(cfg =>
 {
     // map properties with public or internal getters
     cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
