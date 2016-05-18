@@ -86,12 +86,11 @@ When you configure a source/destination type pair in AutoMapper, the configurato
     
     // Configure AutoMapper
     
-    var config = new MapperConfiguration(cfg => cfg.CreateMap<Order, OrderDto>());
+    Mapper.Initialize(cfg => cfg.CreateMap<Order, OrderDto>());
     
     // Perform mapping
     
-    var mapper = config.CreateMapper();
-    OrderDto dto = mapper.Map<Order, OrderDto>(order);
+    OrderDto dto = Mapper.Map<Order, OrderDto>(order);
     
     dto.CustomerName.ShouldEqual("George Costanza");
     dto.Total.ShouldEqual(74.85m);
