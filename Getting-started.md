@@ -13,16 +13,23 @@ First, you need both a source and destination type to work with.  The destinatio
 
 AutoMapper will ignore null reference exceptions when mapping your source to your target. This is by design. If you don't like this approach, you can combine AutoMapper's approach with [[Custom-value-resolvers]] if needed.
 
-Once you have your types you can create a map for the two types using a `MapperConfiguration` instance and CreateMap. You only need one `MapperConfiguration` instance typically per AppDomain and should be instantiated during startup.
+Once you have your types you can create a map for the two types using a `MapperConfiguration` or the static `Mapper` instance and CreateMap. You only need one `MapperConfiguration` instance typically per AppDomain and should be instantiated during startup. Alternatively, you can just use `Mapper.Initialize`.
 
+```
+    Mapper.Initialize(cfg => cfg.CreateMap<Order, OrderDto>());
+    //or
     var config = new MapperConfiguration(cfg => cfg.CreateMap<Order, OrderDto>());
-
-The type on the left is the source type, and the type on the right is the destination type.  To perform a mapping, create an IMapper use the CreateMapper method.
+```
+The type on the left is the source type, and the type on the right is the destination type.  To perform a mapping, use the static or instance Mapper methods, depending on static or instance initialization:
 
     var mapper = config.CreateMapper();
+    // or
+    var mapper = new Mapper(config);
     OrderDto dto = mapper.Map<OrderDto>(order);
+    // or
+    OrderDto dto = Mapper.Map<OrderDto>(order);
 
-Most applications can use dependency inject to inject the created `IMapper` instance.
+Most applications can use dependency injection to inject the created `IMapper` instance.
 
 AutoMapper also has non-generic versions of these methods, for those cases where you might not know the type at compile time.
 
