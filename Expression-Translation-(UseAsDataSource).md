@@ -25,7 +25,7 @@ public class OrderLineDTO
   public decimal Quantity { get; set; }
 }
 
-var config = new MapperConfiguration(cfg => 
+Mapper.Initialize(cfg => 
 {
   cfg.CreateMap<OrderLine, OrderLineDTO>()
     .ForMember(dto => dto.Item, conf => conf.MapFrom(ol => ol.Item.Name);
@@ -38,7 +38,7 @@ var config = new MapperConfiguration(cfg =>
 When mapping from DTO Expression
 ```
 Expression<Func<OrderLineDTO, bool>> dtoExpression = dto=> dto.Item.StartsWith("A");
-var expression = mapper.Map<Func<Expression<OrderLine, bool>>>(dtoExpression);
+var expression = Mapper.Map<Func<Expression<OrderLine, bool>>>(dtoExpression);
 ```
 Expression will bet translated to `ol => ol.Item.Name.StartsWith("A")`
 
@@ -47,7 +47,7 @@ Automapper knows `dto.Item` is mapped to `ol.Item.Name` so it substituted it for
 Expression translation can work on expressions of collections as well.
 ```
 Expression<Func<IQueryable<OrderLineDTO>,IQueryable<OrderLineDTO>>> dtoExpression = dtos => dtos.Where(dto => dto.Quantity > 5).OrderBy(dto => dto.Quantity);
-var expression = mapper.Map<Expression<Func<IQueryable<OrderLine>,IQueryable<OrderLine>>>(dtoExpression);
+var expression = Mapper.Map<Expression<Func<IQueryable<OrderLine>,IQueryable<OrderLine>>>(dtoExpression);
 ```
 Resulting in `ols => ols.Where(ol => ol.Quantity > 5).OrderBy(ol => ol.Quantity)`
 
@@ -58,23 +58,23 @@ Much like how Queryable Extensions can only support certain things that the LINQ
 # UseAsDataSource
 Mapping expressions to one another is a tedious and produces long ugly code.
 
-`UseAsDataSource(mapper).For<DTO>()` makes this translation clean by not having to explicitly map expressions.
-It also calls `Project().To<TDO>()` for you as well, where applicable.
+`UseAsDataSource().For<DTO>()` makes this translation clean by not having to explicitly map expressions.
+It also calls `ProjectTo<TDO>()` for you as well, where applicable.
 
 Using EntityFramework as an example
 
-`dataContext.OrderLines.UseAsDataSource(mapper).For<OrderLineDTO>().Where(dto => dto.Name.StartsWith("A"))`
+`dataContext.OrderLines.UseAsDataSource().For<OrderLineDTO>().Where(dto => dto.Name.StartsWith("A"))`
 
 Does the equivalent of 
 
-`dataContext.OrderLines.Where(ol => ol.Item.Name.StartsWith("A")).Project().To<OrderLineDTO>()`
+`dataContext.OrderLines.Where(ol => ol.Item.Name.StartsWith("A")).ProjectTo<OrderLineDTO>()`
 
-### When Project().To() is not called
-Expression Translation work for all kinds of functions, including `Select` calls.  If `Select` is used after `UseAsDataSource(mapper)` and changes return type, then `Project().To<>()` won't be called and value with be returned instead using `Mapper.Map`.
+### When ProjectTo() is not called
+Expression Translation work for all kinds of functions, including `Select` calls.  If `Select` is used after `UseAsDataSource()` and changes return type, then `ProjectTo<>()` won't be called and value with be returned instead using `Mapper.Map`.
 
 Example:
 
-`dataContext.OrderLines.UseAsDataSource(mapper).For<OrderLineDTO>().Select(dto => dto.Name)`
+`dataContext.OrderLines.UseAsDataSource().For<OrderLineDTO>().Select(dto => dto.Name)`
 
 Does the equivalent of 
 
