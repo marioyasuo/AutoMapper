@@ -18,7 +18,7 @@ For whatever reason, we want Total to be the sum of the source Value properties.
 ```c#
     public interface IValueResolver<in TSource, out TMember>
     {
-    	TMember Resolve(TSource source, ResolutionResult source);
+    	TMember Resolve(TSource source, ResolutionContext context);
     }
 ```
 
