@@ -47,7 +47,7 @@ public class ProductsController : Controller {
 
 # Unsupported operations
 
-One "feature" of AutoMapper allowed you to modify configuration at runtime. That caused many problems, so the new static API does not allow you to do this. You'll need to move all your `Mapper.CreateMap` calls into a profile, and into a `Mapper.Initailize`.
+One "feature" of AutoMapper allowed you to modify configuration at runtime. That caused many problems, so the new static API does not allow you to do this. You'll need to move all your `Mapper.CreateMap` calls into a profile, and into a `Mapper.Initialize`.
 
 For dynamic mapping, such as `Mapper.DynamicMap`, you can configure AutoMapper to create missing maps as needed:
 
