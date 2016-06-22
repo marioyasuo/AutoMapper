@@ -25,7 +25,7 @@ can be used to organize AutoMapper Configuration
 ````csharp
 public class OrganizationProfile : Profile 
 {
-  public OrganizationProfile() 
+  protected override void Configure() 
   {
     CreateMap<Foo, FooDto>();
     //Use CreateMap... Etc.. here (Profile methods are the same as configuration methods)
