@@ -16,9 +16,9 @@ Although AutoMapper covers quite a few destination member mapping scenarios, the
 For whatever reason, we want Total to be the sum of the source Value properties.  For some other reason, we can't or shouldn't put this logic on our Source type.  To supply a custom value resolver, we'll need to first create a type that implements IValueResolver:
 
 ```c#
-    public interface IValueResolver<in TSource, out TMember>
+    public interface IValueResolver<in TSource, TMember>
     {
-    	TMember Resolve(TSource source, ResolutionContext context);
+    	TMember Resolve(TSource source, TMember member, ResolutionContext context);
     }
 ```
 
@@ -26,7 +26,7 @@ The ResolutionContext contains all of the contextual information for the current
 ```c#
     public class CustomResolver : IValueResolver<Source, int>
     {
-    	public int Resolve(Source source, ResolutionContext context)
+    	public int Resolve(Source source, int member, ResolutionContext context)
     	{
             return source.Value1 + source.Value2;
     	}
