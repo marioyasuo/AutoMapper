@@ -21,15 +21,15 @@ Mapper.Initialize(cfg => {
 ```
 
 ## Profile Instances
-can be used to organize AutoMapper Configuration
+Can be used to organize AutoMapper Configuration
 ````csharp
 public class OrganizationProfile : Profile 
 {
-  protected override void Configure() 
-  {
-    CreateMap<Foo, FooDto>();
-    //Use CreateMap... Etc.. here (Profile methods are the same as configuration methods)
-  }
+    public OrganizationProfile() 
+    {
+        CreateMap<Foo, FooDto>();
+       // Use CreateMap... Etc.. here (Profile methods are the same as configuration methods)
+    }
 }
 ````
 
