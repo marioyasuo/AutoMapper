@@ -26,9 +26,9 @@ If we were to try and map these two types as-is, AutoMapper would throw an excep
 ```
 The first option is simply any function that takes a source and returns a destination.  This works for simple cases, but becomes unwieldy for larger ones.  In more difficult cases, we can create a custom ITypeConverter&lt;TSource, TDestination&gt;:
 ```c#
-    public interface ITypeConverter<in TSource, out TDestination>
+    public interface ITypeConverter<in TSource, TDestination>
     {
-    	TDestination Convert(TSource source, ResolutionContext context);
+    	TDestination Convert(TSource source, TDestination destination, ResolutionContext context);
     }
 ```
 And supply AutoMapper with either an instance of a custom type converter, or simply the type, which AutoMapper will instantiate at run time.  The mapping configuration for our above source/destination types then becomes:
@@ -57,7 +57,7 @@ And supply AutoMapper with either an instance of a custom type converter, or sim
     
     public class DateTimeTypeConverter : ITypeConverter<string, DateTime>
     {
-        public DateTime Convert(string source, ResolutionContext context)
+        public DateTime Convert(string source, DateTime destination, ResolutionContext context)
         {
             return System.Convert.ToDateTime(source);
         }
@@ -65,7 +65,7 @@ And supply AutoMapper with either an instance of a custom type converter, or sim
     
     public class TypeTypeConverter : ITypeConverter<string, Type>
     {
-        public Type Convert(string source, ResolutionContext context)
+        public Type Convert(string source, Type destination, ResolutionContext context)
         {
               return context.SourceType;
         }
