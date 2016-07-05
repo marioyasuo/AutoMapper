@@ -17,7 +17,7 @@ In the Destination type, we probably fat-fingered the destination property.  Oth
     Mapper.Initialize(cfg => 
       cfg.CreateMap<Source, Destination>());
     
-    Mapper.AssertConfigurationIsValid();
+    Mapper.Configuration.AssertConfigurationIsValid();
 ```
 Executing this code produces an AutoMapperConfigurationException, with a descriptive message.  AutoMapper checks to make sure that *every single* Destination type member has a corresponding type member on the source type.
 # Overriding configuration errors
