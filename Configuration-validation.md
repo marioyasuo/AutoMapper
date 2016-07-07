@@ -34,3 +34,16 @@ With the third option, we have a member on the destination type that we will fil
     	.ForMember(dest => dest.SomeValuefff, opt => opt.Ignore())
     );
 ```
+
+# Selecting members to validate
+
+By default, AutoMapper uses the destination type to validate members. It assumes that all destination members need to be mapped. To modify this behavior, use the `CreateMap` overload to specify which member list to validate against:
+
+```csharp
+    Mapper.Initialize(cfg => 
+      cfg.CreateMap<Source, Destination>(MemberList.Source);
+      cfg.CreateMap<Source2, Destination2>(MemberList.None);
+    );
+```
+
+To skip validation altogether for this map, use `MemberList.None`. This is the default when calling `ReverseMap()`.
