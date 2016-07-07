@@ -19,8 +19,25 @@ var config = new MapperConfiguration(cfg => {
 
 var mapper = config.CreateMapper();
 // or
-var mapper = new Mapper(config);
+IMapper mapper = new Mapper(config);
 var dest = mapper.Map<Source, Dest>(new Source());
+```
+
+# Gathering configuration before initialization
+
+AutoMapper also lets you gather configuration before initialization:
+
+```
+var cfg = new MapperConfigurationExpression();
+cfg.CreateMap<Source, Dest>();
+cfg.AddProfile<MyProfile>();
+MyBootstrapper.InitAutoMapper(cfg);
+
+Mapper.Initialize(cfg);
+// or
+var mapperConfig = new MapperConfiguration(cfg);
+IMapper mapper = new Mapper(mapperConfig);
+
 ```
 
 # LINQ projections
