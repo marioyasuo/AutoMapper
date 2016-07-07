@@ -24,7 +24,7 @@ If we were to try and map these two types as-is, AutoMapper would throw an excep
     void ConvertUsing(ITypeConverter<TSource, TDestination> converter);
     void ConvertUsing<TTypeConverter>() where TTypeConverter : ITypeConverter<TSource, TDestination>;
 ```
-The first option is simply any function that takes a source and returns a destination.  This works for simple cases, but becomes unwieldy for larger ones.  In more difficult cases, we can create a custom ITypeConverter&lt;TSource, TDestination&gt;:
+The first option is simply any function that takes a source and returns a destination (there are several overloads too). This works for simple cases, but becomes unwieldy for larger ones.  In more difficult cases, we can create a custom ITypeConverter&lt;TSource, TDestination&gt;:
 ```c#
     public interface ITypeConverter<in TSource, TDestination>
     {
