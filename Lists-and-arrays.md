@@ -22,7 +22,7 @@ All the basic generic collection types are supported:
     	};
     
     IEnumerable<Destination> ienumerableDest = Mapper.Map<Source[], IEnumerable<Destination>>(sources);
-    ICollection<Destination> icollectionDest = <apper.Map<Source[], ICollection<Destination>>(sources);
+    ICollection<Destination> icollectionDest = Mapper.Map<Source[], ICollection<Destination>>(sources);
     IList<Destination> ilistDest = Mapper.Map<Source[], IList<Destination>>(sources);
     List<Destination> listDest = Mapper.Map<Source[], List<Destination>>(sources);
     Destination[] arrayDest = Mapper.Map<Source[], Destination[]>(sources);
