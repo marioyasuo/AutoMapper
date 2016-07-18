@@ -1,1 +1,1 @@
-this tutorial suckx
+this tutorial sucks
