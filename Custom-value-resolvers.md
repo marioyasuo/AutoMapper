@@ -16,17 +16,17 @@ Although AutoMapper covers quite a few destination member mapping scenarios, the
 For whatever reason, we want Total to be the sum of the source Value properties.  For some other reason, we can't or shouldn't put this logic on our Source type.  To supply a custom value resolver, we'll need to first create a type that implements IValueResolver:
 
 ```c#
-    public interface IValueResolver<in TSource, TMember>
+    public interface IValueResolver<in TSource, in TDestination, TDestMember>
     {
-    	TMember Resolve(TSource source, TMember member, ResolutionContext context);
+    	TDestMember Resolve(TSource source, TDestination destination, TDestMember destMember, ResolutionContext context);
     }
 ```
 
 The ResolutionContext contains all of the contextual information for the current resolution operation, such as source type, destination type, source value and so on.  An example implementation:
 ```c#
-    public class CustomResolver : IValueResolver<Source, int>
+    public class CustomResolver : IValueResolver<Source, Destination, int>
     {
-    	public int Resolve(Source source, int member, ResolutionContext context)
+    	public int Resolve(Source source, Destination destination, int member, ResolutionContext context)
     	{
             return source.Value1 + source.Value2;
     	}
@@ -59,6 +59,17 @@ In the below example, we'll use the first option, telling AutoMapper the custom 
 ```
 
 Although the destination member (Total) did not have any matching source member, specifying a custom resolver made the configuration valid, as the resolver is now responsible for supplying a value for the destination member.  
+
+If we don't care about the source/destination types in our value resolver, or want to reuse them across maps, we can just use "object" as the source/destination types:
+
+```
+public class MultBy2Resolver : IValueResolver<object, object, int> {
+    public int Resolve(object source, object dest, int destMember, ResolutionContext context) {
+        return destMember * 2;
+    }
+}
+```
+
 ## Custom constructor methods
 Because we only supplied the type of the custom resolver to AutoMapper, the mapping engine will use reflection to create an instance of the value resolver.
 
@@ -73,7 +84,7 @@ If we don't want AutoMapper to use reflection to create the instance, we can eit
 
 AutoMapper will execute this callback function instead of using reflection during the mapping operation, helpful in scenarios where the resolver might have constructor arguments or need to be constructed by an IoC container.
 ## Customizing the source value supplied to the resolver
-By default, AutoMapper passes the source object to the resolver. This limits the reusability of resolvers, since the resolver is coupled to the source type. If, however, we supply a common resolver across multiple types, we configure AutoMapper to redirect the source value supplied to the resolver:
+By default, AutoMapper passes the source object to the resolver. This limits the reusability of resolvers, since the resolver is coupled to the source type. If, however, we supply a common resolver across multiple types, we configure AutoMapper to redirect the source value supplied to the resolver, and also use a different resolver interface so that our resolver can get use of the source/destination members:
 ```c#
 Mapper.Initialize(cfg => {
 cfg.CreateMap<Source, Destination>()
@@ -84,7 +95,9 @@ cfg.CreateMap<OtherSource, OtherDest>()
         opt => opt.ResolveUsing<CustomResolver, decimal>(src => src.OtherSubTotal));
 });
 
-public class CustomResolver : IValueResolver<decimal, decimal> {
+public class CustomResolver : IMemberValueResolver<object, object, decimal, decimal> {
+    public decimal Resolve(object source, object destination, decimal sourceMember, decimal destinationMember, ResolutionContext context) {
 // logic here
+    }
 }
 ```
