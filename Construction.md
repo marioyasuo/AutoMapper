@@ -38,5 +38,7 @@ Mapper.Initialize(cfg =>
 );
 ```
 This works for both LINQ projections and in-memory mapping.
+
 You can also disable constructor mapping :    
+    
     Mapper.Initialize(cfg => cfg.DisableConstructorMapping());
