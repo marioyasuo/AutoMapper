@@ -46,6 +46,33 @@ var mapper = config.CreateMapper();
 ````
 and store the `mapper` instance statically as needed, or use the Mapper instance.
 
+## Assembly Scanning for auto configuration
+
+You can also automatically scan for Profile instances, by passing in assemblies:
+
+```csharp
+// Assembly objects
+Mapper.Initialize(cfg => cfg.AddProfiles(myAssembly));
+
+// Assembly names
+Mapper.Initialize(cfg => 
+    cfg.AddProfiles(new [] {
+        "Foo.UI",
+        "Foo.Core"
+    });
+);
+
+// Marker types for assemblies
+Mapper.Initialize(cfg => 
+    cfg.AddProfiles(new [] {
+        typeof(HomeController),
+        typeof(Entity)
+    });
+);
+```
+
+AutoMapper will scan the assemblies passed in for Profile instances and add each to the configuration.
+
 ## Naming Conventions
 You can set the source and destination naming conventions
 ````csharp
