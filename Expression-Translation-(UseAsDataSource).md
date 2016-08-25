@@ -40,7 +40,7 @@ When mapping from DTO Expression
 Expression<Func<OrderLineDTO, bool>> dtoExpression = dto=> dto.Item.StartsWith("A");
 var expression = Mapper.Map<Func<Expression<OrderLine, bool>>>(dtoExpression);
 ```
-Expression will bet translated to `ol => ol.Item.Name.StartsWith("A")`
+Expression will be translated to `ol => ol.Item.Name.StartsWith("A")`
 
 Automapper knows `dto.Item` is mapped to `ol.Item.Name` so it substituted it for the expression.
 
@@ -70,7 +70,7 @@ Does the equivalent of
 `dataContext.OrderLines.Where(ol => ol.Item.Name.StartsWith("A")).ProjectTo<OrderLineDTO>()`
 
 ### When ProjectTo() is not called
-Expression Translation work for all kinds of functions, including `Select` calls.  If `Select` is used after `UseAsDataSource()` and changes return type, then `ProjectTo<>()` won't be called and value with be returned instead using `Mapper.Map`.
+Expression Translation works for all kinds of functions, including `Select` calls.  If `Select` is used after `UseAsDataSource()` and changes return type, then `ProjectTo<>()` won't be called and value with be returned instead using `Mapper.Map`.
 
 Example:
 
