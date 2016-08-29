@@ -9,7 +9,7 @@ dynamic foo = new MyDynamicObject();
 foo.Bar = 5;
 foo.Baz = 6;
 
-Mapper.Initialize(cfg => {});
+Mapper.Initialize(cfg => { cfg.CreateMissingTypeMaps = true; });
 
 var result = Mapper.Map<Foo>(foo);
 result.Bar.ShouldEqual(5);
