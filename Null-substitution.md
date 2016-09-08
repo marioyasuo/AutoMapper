@@ -1,4 +1,4 @@
-Null substitution allows you to supply an alternate value for a destination member if the source value is null anywhere along the member chain. This means that instead mapping from null, it will map from the value you supply.
+Null substitution allows you to supply an alternate value for a destination member if the source value is null anywhere along the member chain. This means that instead of mapping from null, it will map from the value you supply.
 
     var config = new MapperConfiguration(cfg => cfg.CreateMap<Source, Dest>()
         .ForMember(dest => dest.Value, opt => opt.NullSubstitute("Other Value"));
