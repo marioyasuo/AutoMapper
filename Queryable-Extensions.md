@@ -134,6 +134,7 @@ dbContext.Orders.ProjectTo<OrderDto>(
     "Customer",
     "LineItems");
 ```
+For more information see the integration tests in the automapper source about the ExpandCollections.
 
 ### Aggregations
 
