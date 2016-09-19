@@ -125,12 +125,11 @@ orders[0].OrderType.ShouldEqual("Online");
 In some scenarios, such as OData, a generic DTO is returned through an IQueryable controller action. Without explicit instructions, AutoMapper will expand all members in the result. To control which members are expanded during projection, pass in the members you want to explicitly expand:
 ```c#
 dbContext.Orders.ProjectTo<OrderDto>(
-    Config,
     dest => dest.Customer,
     dest => dest.LineItems);
 // or string-based
 dbContext.Orders.ProjectTo<OrderDto>(
-    Config,
+    null,
     "Customer",
     "LineItems");
 ```
