@@ -8,6 +8,8 @@ AutoMapper supports the following platforms:
 
 New to AutoMapper? Check out the [[Getting Started]] page first.
 
+Also Jimmy Bogard's [blog](https://lostechies.com/jimmybogard/category/automapper/) has useful info.
+
 # General Features
 * [[Flattening]]
 * [[Projection]]
