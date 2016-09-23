@@ -133,7 +133,7 @@ dbContext.Orders.ProjectTo<OrderDto>(
     "Customer",
     "LineItems");
 ```
-For more information see [the tests](https://github.com/AutoMapper/AutoMapper/search?p=1&q=ExplicitExpansion&utf8=%E2%9C%93).
+For more information, see [the tests](https://github.com/AutoMapper/AutoMapper/search?p=1&q=ExplicitExpansion&utf8=%E2%9C%93).
 
 ### Aggregations
 
