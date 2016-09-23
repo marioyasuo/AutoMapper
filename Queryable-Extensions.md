@@ -122,7 +122,7 @@ orders[0].OrderType.ShouldEqual("Online");
 
 ### Explicit expansion
 
-In some scenarios, such as OData, a generic DTO is returned through an IQueryable controller action. Without explicit instructions, AutoMapper will expand all members in the result. To control which members are expanded during projection, pass in the members you want to explicitly expand:
+In some scenarios, such as OData, a generic DTO is returned through an IQueryable controller action. Without explicit instructions, AutoMapper will expand all members in the result. To control which members are expanded during projection, set ExplicitExpansion in the configuration and then pass in the members you want to explicitly expand:
 ```c#
 dbContext.Orders.ProjectTo<OrderDto>(
     dest => dest.Customer,
@@ -133,7 +133,7 @@ dbContext.Orders.ProjectTo<OrderDto>(
     "Customer",
     "LineItems");
 ```
-For more information see the integration tests in the automapper source about the ExpandCollections.
+For more information see [the tests](https://github.com/AutoMapper/AutoMapper/search?p=1&q=ExplicitExpansion&utf8=%E2%9C%93).
 
 ### Aggregations
 
