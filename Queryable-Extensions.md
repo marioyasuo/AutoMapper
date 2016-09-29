@@ -81,27 +81,35 @@ So when you run the following code...
                   .ToList();
 ```
 ...this is what happens:
-1) AutoMappers `.ProjectTo<OrderLineDTO>()` emits a query to EntityFramework which in turn loads all OrderLine entities into memory
-2) the `.Where(...)` operator is then executed by Linq to objects on the in-memory collection.
-Obviously this can be a bottleneck.
+1. AutoMappers `.ProjectTo<OrderLineDTO>()` emits a query to EntityFramework which in turn loads all OrderLine entities into memory
+2. the `.Where(...)` operator is then executed by Linq to objects on the in-memory collection.
+Obviously this can become a bottleneck.
 
 Now when you run this code...
 ```
-
+      var results = context.Orderlines
+                  .UseAsDataSource()
+                  .For<OrderLineDTO>()
+                  .Where(ol => ol.OrderId == orderId)
+                  .ToList();
 
 ```
-... here is what happens:
-1) AutoMappers `.UseAsDataSource().For<OrderLineDTO>()`creates a special IQueryable which does not yet emit the expression to the underlying provider (Entity Framework) but waits for being enumerated
-2) the `.Where(...)` operator is therefore not executed immediately, but added to the IQueryables expression tree.
-3) eventually, `.ToList()` is executed, which causes our special IQuerayble to forward the expression to EntityFramework (which has been altered by `.Where(...)` and loads the results into memory.
+... this is what happens:
+1. AutoMappers `.UseAsDataSource().For<OrderLineDTO>()`creates a special IQueryable which does not yet emit the expression to the underlying provider (Entity Framework) but waits for being enumerated
+2. the `.Where(...)` operator is therefore not executed immediately, but added to the IQueryables expression tree.
+3. eventually, `.ToList()` is executed, which causes our special IQuerayble to forward the expression to EntityFramework (which has been altered by `.Where(...)` and loads the results into memory.
+
 As the `.Where(...)` filter has been forwarded to EntityFrameworks provider, it is also translated to SQL, so a much smaller resultset is loaded into memory.
 
-So when do you use `.ProjectTo<OrderLineDTO>` and when `.UseAsDataSource().For<OrderLineDTO>()`?
-a) if you do not want to edit the mapped query anymore, go for `.ProjectTo<OrderLineDTO>()` as it runs faster
-b) if you do plan to edit the mapped query, go for the `.UseAsDataSource().For<OrderLineDTO>()` approach.
 
-In the AutoMapperSamples.OData project, you find some NUNit tests, which show you the power of `.UseAsDataSource()`: They use this mechanism to map IQueryable<TEntity> sets of an EntityFramework DbContext, and expose them as IQueryable<TDto> through an Asp.Net Web API REST endpoint. 
-That way, an OData query is materialized, then mapped to an IQueryable<TDto> and that is in turn mapped to an IQueryable<TEntity>. So your OData $filter and $orderby expressions are actually translated into SQL without you having to expose your Domain Model! (quite powerfull stuff, don't you think?)
+So when do you use `.ProjectTo<OrderLineDTO>` and when `.UseAsDataSource().For<OrderLineDTO>()`?
+* if you do not want to edit the mapped query anymore, go for `.ProjectTo<OrderLineDTO>()` as it runs faster
+* if you do plan to edit the mapped query, go for the `.UseAsDataSource().For<OrderLineDTO>()` approach.
+
+In the _AutoMapperSamples.OData_ project, you find some NUNit tests, which show you the power of `.UseAsDataSource()`:
+
+They use this mechanism to map IQueryable<TEntity> sets of an EntityFramework DbContext, and expose them as IQueryable<TDto> through an Asp.Net Web API REST endpoint. 
+That way, your **OData $filter and $orderby expressions are actually translated into SQL without you having to expose your Domain Model!** (quite powerfull stuff, don't you think?)
 
 ### Preventing lazy loading/SELECT N+1 problems
 
