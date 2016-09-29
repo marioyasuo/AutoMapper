@@ -52,7 +52,7 @@ The `.ProjectTo<OrderLineDTO>()` will tell AutoMapper's mapping engine to emit a
 
 Note that for this feature to work, all type conversions must be explicitly handled in your Mapping. For example, you can not rely on the `ToString()` override of the `Item` class to inform entity framework to only select from the `Name` column, and any data type changes, such as `Double` to `Decimal` must be explicitly handled as well.
 
-Next to `.ProjectTo<OrderLineDTO>`, AutoMapper supports another way to map from one IQueryable<TEntity> to another IQueryable<TDto> by using the "UsaAsDataSource()" extension method. 
+Next to `.ProjectTo<OrderLineDTO>`, AutoMapper supports another way to map from one `IQueryable<TEntity>` to a `IQueryable<TDto>`: the `.UsaAsDataSource()` extension method. 
 Using it, the previous example can be rewritten like so:
 
 ```
