@@ -220,6 +220,7 @@ cfg.CreateMap<Course, CourseModel>()
 When we project, we'll substitute our parameter at runtime:
 ```
 dbContext.Courses.ProjectTo<CourseModel>(Config, new { currentUserName = Request.User.Name });
+// or
 dbContext.Courses.UseAsDataSource().For<CourseModel>(Config, new { currentUserName = Request.User.Name });
 ```
 This works by capturing the name of the closure's field name in the original expression, then using an anonymous object/dictionary to apply the value to the parameter value before the query is sent to the query provider.
