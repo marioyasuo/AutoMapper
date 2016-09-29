@@ -71,6 +71,7 @@ Using it, the previous example can be rewritten like so:
     }
 ```
 This would yield the very same result - so what the heck is the difference?
+
 When you call `.ProjectTo<OrderLineDTO>`, this returns an IQueryable which will be send to the underlying provider (e.g. Entity Framework) as is.
 So when you run the following code...
 ```
