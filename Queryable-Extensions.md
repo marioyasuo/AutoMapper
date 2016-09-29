@@ -52,6 +52,56 @@ The `.ProjectTo<OrderLineDTO>()` will tell AutoMapper's mapping engine to emit a
 
 Note that for this feature to work, all type conversions must be explicitly handled in your Mapping. For example, you can not rely on the `ToString()` override of the `Item` class to inform entity framework to only select from the `Name` column, and any data type changes, such as `Double` to `Decimal` must be explicitly handled as well.
 
+Next to `.ProjectTo<OrderLineDTO>`, AutoMapper supports another way to map from one IQueryable<TEntity> to another IQueryable<TDto> by using the "UsaAsDataSource()" extension method. 
+Using it, the previous example can be rewritten like so:
+
+```
+    Mapper.Initialize(cfg => 
+        cfg.CreateMap<OrderLine, OrderLineDTO>()
+        .ForMember(dto => dto.Item, conf => conf.MapFrom(ol => ol.Item.Name)));
+
+    public List<OrderLineDTO> GetLinesForOrder(int orderId)
+    {
+      using (var context = new orderEntities())
+      {
+        return context.OrderLines.UseAsDataSource()
+                 .Where(ol => ol.OrderId == orderId)
+                 .For<OrderLineDTO>().ToList();
+      }
+    }
+```
+This would yield the very same result - so what the heck is the difference?
+When you call `.ProjectTo<OrderLineDTO>`, this returns an IQueryable which will be send to the underlying provider (e.g. Entity Framework) as is.
+So when you run the following code...
+```
+      var results = context.Orderlines
+                  .ProjectTo<OrderLineDTO>()
+                  .Where(ol => ol.OrderId == orderId)
+                  .ToList();
+```
+...this is what happens:
+1) AutoMappers `.ProjectTo<OrderLineDTO>()` emits a query to EntityFramework which in turn loads all OrderLine entities into memory
+2) the `.Where(...)` operator is then executed by Linq to objects on the in-memory collection.
+Obviously this can be a bottleneck.
+
+Now when you run this code...
+```
+
+
+```
+... here is what happens:
+1) AutoMappers `.UseAsDataSource().For<OrderLineDTO>()`creates a special IQueryable which does not yet emit the expression to the underlying provider (Entity Framework) but waits for being enumerated
+2) the `.Where(...)` operator is therefore not executed immediately, but added to the IQueryables expression tree.
+3) eventually, `.ToList()` is executed, which causes our special IQuerayble to forward the expression to EntityFramework (which has been altered by `.Where(...)` and loads the results into memory.
+As the `.Where(...)` filter has been forwarded to EntityFrameworks provider, it is also translated to SQL, so a much smaller resultset is loaded into memory.
+
+So when do you use `.ProjectTo<OrderLineDTO>` and when `.UseAsDataSource().For<OrderLineDTO>()`?
+a) if you do not want to edit the mapped query anymore, go for `.ProjectTo<OrderLineDTO>()` as it runs faster
+b) if you do plan to edit the mapped query, go for the `.UseAsDataSource().For<OrderLineDTO>()` approach.
+
+In the AutoMapperSamples.OData project, you find some NUNit tests, which show you the power of `.UseAsDataSource()`: They use this mechanism to map IQueryable<TEntity> sets of an EntityFramework DbContext, and expose them as IQueryable<TDto> through an Asp.Net Web API REST endpoint. 
+That way, an OData query is materialized, then mapped to an IQueryable<TDto> and that is in turn mapped to an IQueryable<TEntity>. So your OData $filter and $orderby expressions are actually translated into SQL without you having to expose your Domain Model! (quite powerfull stuff, don't you think?)
+
 ### Preventing lazy loading/SELECT N+1 problems
 
 Because the LINQ projection built by AutoMapper is translated directly to a SQL query by the query provider, the mapping occurs at the SQL/ADO.NET level, and not touching your entities. All data is eagerly fetched and loaded into your DTOs.
