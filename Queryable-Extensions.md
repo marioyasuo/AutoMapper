@@ -269,6 +269,7 @@ Using it, you can do the following:
                          // edit some property, or load additional data from the database and augment the dtos
                     }
                  }
+       }
     }
 ```
 this `OnEnumerated(IEnumerable)`callback is executed, when the `IQueryable<OrderLineDTO>` itself is enumerated.
