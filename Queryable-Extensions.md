@@ -186,6 +186,10 @@ In some scenarios, such as OData, a generic DTO is returned through an IQueryabl
 dbContext.Orders.ProjectTo<OrderDto>(
     dest => dest.Customer,
     dest => dest.LineItems);
+// or
+dbContext.Orders.UseAsDataSource().For<OrderDto>(
+    dest => dest.Customer,
+    dest => dest.LineItems);
 // or string-based
 dbContext.Orders.ProjectTo<OrderDto>(
     null,
@@ -216,6 +220,7 @@ cfg.CreateMap<Course, CourseModel>()
 When we project, we'll substitute our parameter at runtime:
 ```
 dbContext.Courses.ProjectTo<CourseModel>(Config, new { currentUserName = Request.User.Name });
+dbContext.Courses.UseAsDataSource().For<CourseModel>(Config, new { currentUserName = Request.User.Name });
 ```
 This works by capturing the name of the closure's field name in the original expression, then using an anonymous object/dictionary to apply the value to the parameter value before the query is sent to the query provider.
 ### Supported mapping options
