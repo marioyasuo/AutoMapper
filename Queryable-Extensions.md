@@ -109,7 +109,7 @@ So when do you use `.ProjectTo<OrderLineDTO>` and when `.UseAsDataSource().For<O
 In the _AutoMapperSamples.OData_ project, you find some NUnit tests, which show you the power of `.UseAsDataSource()`:
 
 They use this mechanism to map `IQueryable<TEntity>` sets of an EntityFramework DbContext to `IQueryable<TDto>`s and exposes the latter ones through an Asp.Net Web API REST endpoint. 
-That way, your **OData $filter and $orderby expressions are actually translated into SQL without you having to expose your Domain Model!** which means you have full control over what data is sent to clients. (quite powerfull stuff, don't you think?)
+That way, your **OData $filter and $orderby expressions are actually translated into SQL without you having to expose your Domain Model!** which means you have full control over what data is sent to clients.
 
 ### Preventing lazy loading/SELECT N+1 problems
 
