@@ -81,7 +81,9 @@ So when you run the following code...
                   .ToList();
 ```
 ...this is what happens:
+
 1. AutoMappers `.ProjectTo<OrderLineDTO>()` emits a query to EntityFramework which in turn loads all OrderLineDTOs into memory.
+
 2. the `.Where(...)` operator is then executed by Linq to objects on the in-memory collection.
 Obviously this can become a bottleneck.
 
