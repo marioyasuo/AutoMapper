@@ -79,3 +79,53 @@ Example:
 Does the equivalent of 
 
 `dataContext.OrderLines.Select(ol => ol.Item.Name)`
+
+### Register a callback, for when an UseAsDataSource() query is enumerated
+Sometimes, you may want to edit the collection, that is returned from a mapped query before forwarding it to the next application layer.
+With `.ProjectTo<TDto>` this is quite simple, as there is no sense in directly returning the resulting `IQueryable<TDto>` because you cannot edit it anymore anyways. So you will most likely do this:
+```
+    Mapper.Initialize(cfg => 
+        cfg.CreateMap<OrderLine, OrderLineDTO>()
+        .ForMember(dto => dto.Item, conf => conf.MapFrom(ol => ol.Item.Name)));
+
+    public List<OrderLineDTO> GetLinesForOrder(int orderId)
+    {
+      using (var context = new orderEntities())
+      {
+        var dtos = context.OrderLines.Where(ol => ol.OrderId == orderId)
+                 .ProjectTo<OrderLineDTO>().ToList();
+        foreach(var dto in dtos)
+        {
+            // edit some property, or load additional data from the database and augment the dtos
+        }
+        return dtos;
+      }
+    }
+```
+However, if you did this with the `.UseAsDataSource()` approach, you would loose all its power - namely its ability to modify the internal expression until it is enumerated.
+To solve that problem, we introduced the `.OnEnumerated` callback.
+Using it, you can do the following:
+```
+    Mapper.Initialize(cfg => 
+        cfg.CreateMap<OrderLine, OrderLineDTO>()
+        .ForMember(dto => dto.Item, conf => conf.MapFrom(ol => ol.Item.Name)));
+
+    public IQueryable<OrderLineDTO> GetLinesForOrder(int orderId)
+    {
+      using (var context = new orderEntities())
+      {
+        return context.OrderLines.Where(ol => ol.OrderId == orderId)
+                 .UseAsDataSource()
+                 .For<OrderLineDTO>()
+                 .OnEnumerated((dtos) =>
+                 {
+                    foreach(var dto in dtosCast<OrderLineDTO>())
+                    {
+                         // edit some property, or load additional data from the database and augment the dtos
+                    }
+                 }
+       }
+    }
+```
+this `OnEnumerated(IEnumerable)`callback is executed, when the `IQueryable<OrderLineDTO>` itself is enumerated.
+So this also works with the OData samples mentioned above: The OData $filter and $orderby expressions are still converted into SQL, and the `OnEnumerated()`callback is provided with the filtered, ordered resultset from the database.
