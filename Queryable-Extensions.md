@@ -100,9 +100,9 @@ Now when you run this code...
 
 1. AutoMappers `.UseAsDataSource().For<OrderLineDTO>()`creates a special IQueryable which does not yet emit the expression to the underlying provider (Entity Framework) but waits for it to be enumerated.
 
-2. the `.Where(...)` operator is therefore not executed immediately, but added to the IQueryables expression tree.
+2. The `.Where(...)` operator is therefore not executed immediately, but added to the IQueryables expression tree.
 
-3. eventually, `.ToList()` is executed, which causes our special IQuerayble to forward the expression to EntityFramework (which has been altered by `.Where(...)` and loads the results into memory.
+3. Eventually, `.ToList()` is executed, which causes our special IQuerayble to forward the expression to EntityFramework (which has been altered by `.Where(...)` and loads the results into memory.
 
 As the `.Where(...)` filter has been forwarded to EntityFrameworks provider, it is also translated to SQL, so a much smaller resultset is loaded into memory.
 
