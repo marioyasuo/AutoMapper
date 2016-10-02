@@ -160,7 +160,6 @@ dbContext.Courses.ProjectTo<CourseModel>(Config, new { currentUserName = Request
 ```
 This works by capturing the name of the closure's field name in the original expression, then using an anonymous object/dictionary to apply the value to the parameter value before the query is sent to the query provider.
 
-
 ### Supported mapping options
 Not all mapping options can be supported, as the expression generated must be interpreted by a LINQ provider. Only what is supported by LINQ providers is supported by AutoMapper:
 * MapFrom
