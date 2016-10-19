@@ -124,7 +124,7 @@ Mapper.Initialize(c =>
 ```
 ## Recognizing pre/postfixes
 
-Sometimes your source/destination properties will have common pre/postfixes that cause you to have to do a bunch of custom member mappings because the names don't match up. To address this, you can recognize pre/postixes:
+Sometimes your source/destination properties will have common pre/postfixes that cause you to have to do a bunch of custom member mappings because the names don't match up. To address this, you can recognize pre/postfixes:
 
 ```c#
 public class Source {
