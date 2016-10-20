@@ -4,7 +4,7 @@ AutoMapper uses a fluent configuration API to define an object-object mapping st
 
 AutoMapper supports the following platforms:
 * .NET 4.5
-* .NET Platform Standard 1.1
+* .NET Platform Standard 1.1 & 1.3
 
 New to AutoMapper? Check out the [[Getting Started]] page first.
 
