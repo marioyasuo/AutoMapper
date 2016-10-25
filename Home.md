@@ -20,7 +20,7 @@ Also Jimmy Bogard's [blog](https://lostechies.com/jimmybogard/category/automappe
 * [[Custom Value Resolvers]]
 * [[Null Substitution]]
 * [[Before and after map actions]]
-* [[Containers]]
+* [[Dependency Injection]]
 * [[Mapping Inheritance]]
 * [[Queryable Extensions]] (LINQ)
 * [[Configuration]]
