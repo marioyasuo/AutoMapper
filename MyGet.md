@@ -36,14 +36,14 @@ namespace UnitTestProject1
             
             var sourcePerson = new Person
             {
-                FirstName = "Bill",
+                FirstName = "Gene",
                 LastName = "Gates",
                 Code = 10
             };
             var destinationPersonDto = new PersonDTO
             {
                 FirstName = null,
-                LastName = "Smith",
+                LastName = "Wilder",
                 Code = 10
             };
 
