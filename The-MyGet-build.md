@@ -6,5 +6,5 @@ The AutoMapper MyGet gallery is available at http://myget.org/gallery/automapper
 If you want to install the latest MyGet package into a project, you can use the following command:
 
 ```
-Install-Package AutoMapper -Source https://www.myget.org/F/automapperdev/api/v3/index.json
+Install-Package AutoMapper -Source https://www.myget.org/F/automapperdev/api/v3/index.json -IncludePrerelease
 ```
