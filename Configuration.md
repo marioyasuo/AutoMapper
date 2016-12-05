@@ -175,3 +175,14 @@ Mapper.Initialize(cfg =>
 });
 ```
 Map configurations will now recognize internal/private members.
+
+## Configuration compilation
+
+Because expression compilation can be a bit resource intensive, AutoMapper lazily compiles the type map plans on first map. However, this behavior is not always desirable, so you can tell AutoMapper to compile its mappings directly:
+
+```c#
+Mapper.Initialize(cfg => {});
+Mapper.Configuration.CompileMappings();
+```
+
+For a few hundred mappings, this may take a couple of seconds.
