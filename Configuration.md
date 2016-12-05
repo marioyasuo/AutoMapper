@@ -40,11 +40,7 @@ cfg.AddProfile<OrganizationProfile>();
 cfg.AddProfile(new OrganizationProfile());
 ```
 
-Initialize the profile like so 
-````csharp
-var mapper = config.CreateMapper();
-````
-and store the `mapper` instance statically as needed, or use the Mapper instance.
+Configuration inside a profile only applies to maps inside the profile. Configuration applied to the root configuration applies to *all* maps created.
 
 ## Assembly Scanning for auto configuration
 
