@@ -32,6 +32,7 @@ public class OrganizationProfile : Profile
     }
 }
 ````
+Notice that in this case method `Configure()` is obsolete. Create a constructor and configure inside of your profile's constructor instead. `Configure()` will be removed in 6.0
 
 You can then add profiles to the main `MapperConfiguration` in a number of ways:
 
