@@ -27,6 +27,7 @@ Also Jimmy Bogard's [blog](https://lostechies.com/jimmybogard/category/automappe
 * [[Conditional Mapping]]
 * [[Open Generics]]
 * [[Understanding your mapping]]
+
 # Samples
 The source code contains unit tests and samples for all of the features listed above.  To view the samples, browse the [source code](https://github.com/AutoMapper/AutoMapper/tree/master/src/AutoMapperSamples).
 # Housekeeping
