@@ -23,7 +23,7 @@ Executing this code produces an AutoMapperConfigurationException, with a descrip
 # Overriding configuration errors
 To fix a configuration error (besides renaming the source/destination members), you have three choices for providing an alternate configuration:
 
-* Custom value resolver
+* [[Custom value resolvers]]
 * [[Projection]]
 * Use the Ignore() option
 
