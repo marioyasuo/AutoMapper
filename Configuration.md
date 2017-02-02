@@ -28,7 +28,7 @@ Create classes that inherit from `Profile` and put the configuration in the cons
 // This is the approach starting with version 5
 public class OrganizationProfile : Profile
 {
-	protected OrganizationProfile()
+	public OrganizationProfile()
 	{
 		CreateMap<Foo, FooDto>();
 		// Use CreateMap... Etc.. here (Profile methods are the same as configuration methods)
