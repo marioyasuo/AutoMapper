@@ -21,37 +21,55 @@ Mapper.Initialize(cfg => {
 ```
 
 ## Profile Instances
-Can be used to organize AutoMapper Configuration
+
+A good way to organize your mapping configurations is with profiles. 
+Create classes that inherit from `Profile` and put the configuration in the constructor:
 ````csharp
-public class OrganizationProfile : Profile 
+// This is the approach starting with version 5
+public class OrganizationProfile : Profile
 {
-    protected override void Configure()
-    {
-        CreateMap<Foo, FooDto>();
-       // Use CreateMap... Etc.. here (Profile methods are the same as configuration methods)
-    }
+	protected OrganizationProfile()
+	{
+		CreateMap<Foo, FooDto>();
+		// Use CreateMap... Etc.. here (Profile methods are the same as configuration methods)
+	}
 }
+
+// How it was done in 4.x - as of 5.0 this is obsolete:
+// public class OrganizationProfile : Profile 
+// {
+//     protected override void Configure()
+//     {
+//         CreateMap<Foo, FooDto>();
+//     }
+// }
 ````
-Notice that in this case method `Configure()` is obsolete. Create a constructor and configure inside of your profile's constructor instead. `Configure()` will be removed in 6.0
 
-You can then add profiles to the main `MapperConfiguration` in a number of ways:
+In earlier versions the `Configure` method was used instead of a constructor. 
+As of version 5, `Configure()` is obsolete. It will be removed in 6.0.
 
+Configuration inside a profile only applies to maps inside the profile. Configuration applied to the root configuration applies to *all* maps created.
+
+### Assembly Scanning for auto configuration
+
+Profiles can be added to the main mapper configuration in a number of ways, either directly:
 ```
 cfg.AddProfile<OrganizationProfile>();
 cfg.AddProfile(new OrganizationProfile());
 ```
 
-Configuration inside a profile only applies to maps inside the profile. Configuration applied to the root configuration applies to *all* maps created.
-
-## Assembly Scanning for auto configuration
-
-You can also automatically scan for Profile instances, by passing in assemblies:
+or by automatically scanning for profiles:
 
 ```csharp
-// Assembly objects
+// Scan for all profiles in an assembly
+// ... using instance approach:
+var config = new MapperConfiguration(cfg => {
+    cfg.AddProfiles(myAssembly);
+});
+// ... or static approach:
 Mapper.Initialize(cfg => cfg.AddProfiles(myAssembly));
 
-// Assembly names
+// Can also use assembly names:
 Mapper.Initialize(cfg => 
     cfg.AddProfiles(new [] {
         "Foo.UI",
@@ -59,7 +77,7 @@ Mapper.Initialize(cfg =>
     });
 );
 
-// Marker types for assemblies
+// Or marker types for assemblies:
 Mapper.Initialize(cfg => 
     cfg.AddProfiles(new [] {
         typeof(HomeController),
@@ -68,7 +86,7 @@ Mapper.Initialize(cfg =>
 );
 ```
 
-AutoMapper will scan the assemblies passed in for Profile instances and add each to the configuration.
+AutoMapper will scan the designated assemblies for classes inheriting from Profile and add them to the configuration.
 
 ## Naming Conventions
 You can set the source and destination naming conventions
