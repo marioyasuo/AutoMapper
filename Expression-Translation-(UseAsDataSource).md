@@ -76,7 +76,7 @@ Example:
 
 `dataContext.OrderLines.UseAsDataSource().For<OrderLineDTO>().Select(dto => dto.Name)`
 
-Does the equivalent of 
+Does the equivalent of: 
 
 `dataContext.OrderLines.Select(ol => ol.Item.Name)`
 
