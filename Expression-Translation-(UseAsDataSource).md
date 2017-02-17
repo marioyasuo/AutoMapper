@@ -51,6 +51,42 @@ var expression = Mapper.Map<Expression<Func<IQueryable<OrderLine>,IQueryable<Ord
 ```
 Resulting in `ols => ols.Where(ol => ol.Quantity > 5).OrderBy(ol => ol.Quantity)`
 
+
+### Mapping Flattened Properties to Navigation Properties
+AutoMapper also supports mapping flattened (TModel or DTO) properties in expressions to their corresponding (TData) navigation properties (when the navigation property has been removed from the view model or DTO) e.g. CourseModel.DepartmentName from the model expression becomes Course.Department in the data expression.
+
+Take the following set of classes:
+```
+    public class CourseModel
+    {
+        public int CourseID { get; set; }
+
+        public int DepartmentID { get; set; }
+        public string DepartmentName { get; set; }
+    }
+    public class Course
+    {
+        public int CourseID { get; set; }
+
+        public int DepartmentID { get; set; }
+        public Department Department { get; set; }
+    }
+
+    public class Department
+    {
+        public int DepartmentID { get; set; }
+        public string Name { get; set; }
+    }
+```
+Then map exp below to expMapped.
+
+```
+Expression<Func<IQueryable<CourseModel>, IIncludableQueryable<CourseModel, object>>> exp = i => i.Include(s => s.DepartmentName);
+Expression<Func<IQueryable<Course>, IIncludableQueryable<Course, object>>> expMapped = mapper.MapExpressionAsInclude<Expression<Func<IQueryable<Course>, IIncludableQueryable<Course, object>>>>(exp);
+```
+
+The resulting mapped expression (expMapped.ToString()) is then ``` i => i.Include(s => s.Department);  ``` . This feature allows navigation properties for the query to be defined based on the view model alone.
+
 ### Supported Mapping options
 
 Much like how Queryable Extensions can only support certain things that the LINQ providers support, expression translation follows the same rules as what it can and can't support.
