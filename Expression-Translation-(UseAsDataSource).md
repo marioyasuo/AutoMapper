@@ -38,7 +38,7 @@ Mapper.Initialize(cfg =>
 When mapping from DTO Expression
 ```
 Expression<Func<OrderLineDTO, bool>> dtoExpression = dto=> dto.Item.StartsWith("A");
-var expression = Mapper.Map<Func<Expression<OrderLine, bool>>>(dtoExpression);
+var expression = Mapper.Map<Expression<Func<OrderLine, bool>>>(dtoExpression);
 ```
 Expression will be translated to `ol => ol.Item.Name.StartsWith("A")`
 
