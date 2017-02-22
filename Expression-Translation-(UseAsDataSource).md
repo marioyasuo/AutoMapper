@@ -28,7 +28,7 @@ public class OrderLineDTO
 Mapper.Initialize(cfg => 
 {
   cfg.CreateMap<OrderLine, OrderLineDTO>()
-    .ForMember(dto => dto.Item, conf => conf.MapFrom(ol => ol.Item.Name);
+    .ForMember(dto => dto.Item, conf => conf.MapFrom(ol => ol.Item.Name));
   cfg.CreateMap<OrderLineDTO, OrderLine>()
     .ForMember(ol => ol.Item, conf => conf.MapFrom(dto => dto));
   cfg.CreateMap<OrderLineDTO, Item>()
