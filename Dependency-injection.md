@@ -16,31 +16,32 @@ Or dynamic service location, to be used in the case of instance-based containers
 
 For those using Ninject here is an example of a Ninject module for AutoMapper 
 ```c#
-    public class AutoMapperModule : NinjectModule
+public class AutoMapperModule : NinjectModule
+{
+    public override void Load()
     {
-        public override void Load()
-        {
-            Bind<IValueResolver<SourceEntity, DestModel, bool>>().To<MyResolver>();
+        Bind<IValueResolver<SourceEntity, DestModel, bool>>().To<MyResolver>();
 
-            var mapperConfiguration = CreateConfiguration();
-            Bind<MapperConfiguration>().ToConstant(mapperConfiguration).InSingletonScope();
+        var mapperConfiguration = CreateConfiguration();
+        Bind<MapperConfiguration>().ToConstant(mapperConfiguration).InSingletonScope();
 
-            // This teaches Ninject how to create automapper instances say if for instance MyResolver has a constructor 
-            // with a parameter that needs to be injected
-            Bind<IMapper>().ToMethod(ctx => new Mapper(mapperConfiguration, type => ctx.Kernel.Get(type)));
-        }
-
-        private MapperConfiguration CreateConfiguration()
-        {
-            var config = new MapperConfiguration(cfg =>
-            {
-                // Add all profiles in current assembly
-                cfg.AddProfiles(GetType().Assembly);
-            });
-
-            return config;
-        }
+        // This teaches Ninject how to create automapper instances say if for instance
+        // MyResolver has a constructor with a parameter that needs to be injected
+        Bind<IMapper>().ToMethod(ctx => 
+             new Mapper(mapperConfiguration, type => ctx.Kernel.Get(type)));
     }
+
+    private MapperConfiguration CreateConfiguration()
+    {
+        var config = new MapperConfiguration(cfg =>
+        {
+            // Add all profiles in current assembly
+            cfg.AddProfiles(GetType().Assembly);
+        });
+
+        return config;
+    }
+}
 ```
 
 # ASP.NET Core
