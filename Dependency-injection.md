@@ -14,6 +14,8 @@ Or dynamic service location, to be used in the case of instance-based containers
     var dest = mapper.Map<Source, Destination>(new Source { Value = 15 });
 ```
 
+### Ninject
+
 For those using Ninject here is an example of a Ninject module for AutoMapper 
 ```c#
 public class AutoMapperModule : NinjectModule
