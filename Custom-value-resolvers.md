@@ -101,3 +101,15 @@ public class CustomResolver : IMemberValueResolver<object, object, decimal, deci
     }
 }
 ```
+
+## Passing in key-value to Mapper
+When calling map you can pass in extra objects by using key-value and using a custom resolver to get the object from context.
+```c#
+Mapper.Map<Source, Dest>(src, opt => opt.Items["Foo"] = "Bar");
+```
+
+This is how to setup the mapping for this custom resolver
+```c#
+Mapper.CreateMap<Source, Dest>()
+    .ForMember(d => d.Foo, opt => opt.ResolveUsing(res => res.Context.Options.Items["Foo"]));
+```
