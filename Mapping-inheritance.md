@@ -1,4 +1,3 @@
-# Mapping Inheritance
 Mapping inheritance serves two functions:
 
 - Inheriting mapping configuration from a base class or interface configuration
