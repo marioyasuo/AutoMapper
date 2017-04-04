@@ -1,5 +1,32 @@
 # Mapping Inheritance
-AutoMapper 1.1 had a method called .Include<> when creating your maps which allowed AutoMapper to automatically select the most derived mapping for a class.
+Mapping inheritance serves two functions:
+
+- Inheriting mapping configuration from a base class or interface configuration
+- Runtime polymorphic mapping
+
+Inheriting base class configuration is opt-in, and you can either explicitly specify the mapping to inherit from the base type configuration with `Include` or in the derived type configuration with `IncludeBase`:
+
+```c#
+CreateMap<BaseEntity, BaseDto>()
+   .Include<DerivedEntity, DerivedDto>()
+   .ForMember(dest => dest.SomeMember, opt => opt.MapFrom(src => src.OtherMember));
+
+CreateMap<DerivedEntity, DerivedDto>();
+```
+
+or
+
+```c#
+CreateMap<BaseEntity, BaseDto>()
+   .ForMember(dest => dest.SomeMember, opt => opt.MapFrom(src => src.OtherMember));
+
+CreateMap<DerivedEntity, DerivedDto>()
+    .IncludeBase<BaseEntity, BaseDto>();
+```
+
+In each case above, the derived mapping inherits the custom mapping configuration from the base mapping configuration.
+
+## Runtime polymorphism
 
 Take:
 ```c#
