@@ -151,7 +151,7 @@ public class Dest {
     public int Value2 { get; set; }
 }
 Mapper.Initialize(cfg => {
-    cfg.RecognizePrefix("frm");
+    cfg.RecognizePrefixes("frm");
     cfg.CreateMap<Source, Dest>();
 });
 Mapper.AssertConfigurationIsValid();
