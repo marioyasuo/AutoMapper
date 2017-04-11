@@ -7,7 +7,7 @@ Using Entity Framework for an example, say that you have an entity `OrderLine` w
 Use this approach instead.
 
 Given the following entities:
-```
+```c#
     public class OrderLine
     {
       public int Id { get; set; }
@@ -23,7 +23,7 @@ Given the following entities:
     }
 ```
 And the following DTO:
-```
+```c#
     public class OrderLineDTO
     {
       public int Id { get; set; }
@@ -33,7 +33,7 @@ And the following DTO:
     }
 ```
 You can use the Queryable Extensions like so:
-```
+```c#
     Mapper.Initialize(cfg => 
         cfg.CreateMap<OrderLine, OrderLineDTO>()
         .ForMember(dto => dto.Item, conf => conf.MapFrom(ol => ol.Item.Name)));
@@ -57,7 +57,7 @@ Note that for this feature to work, all type conversions must be explicitly hand
 Because the LINQ projection built by AutoMapper is translated directly to a SQL query by the query provider, the mapping occurs at the SQL/ADO.NET level, and not touching your entities. All data is eagerly fetched and loaded into your DTOs.
 
 Nested collections use a Select to project child DTOs:
-```
+```c#
 from i in db.Instructors
 orderby i.LastName
 select new InstructorIndexData.InstructorModel
@@ -79,7 +79,7 @@ This map through AutoMapper will result in a SELECT N+1 problem, as each child `
 ### Custom projection
 
 In the case where members names don't line up, or you want to create calculated property, you can use MapFrom (and not ResolveUsing) to supply a custom expression for a destination member:
-```
+```c#
     Mapper.Initialize(cfg => cfg.CreateMap<Customer, CustomerDto>()
         .ForMember(d => d.FullName, opt => opt.MapFrom(c => c.FirstName + " " + c.LastName))
         .ForMember(d => d.TotalContacts, opt => opt.MapFrom(c => c.Contacts.Count()));
@@ -91,7 +91,7 @@ If the expression is rejected from your query provider (Entity Framework, NHiber
 ### Custom Type Conversion
 
 Occasionally, you need to completely replace a type conversion from a source to a destination type. In normal runtime mapping, this is accomplished via the ConvertUsing method. To perform the analog in LINQ projection, use the ProjectUsing method:
-```
+```c#
 cfg.CreateMap<Source, Dest>().ProjectUsing(src => new Dest { Value = 10 });
 ```
 `ProjectUsing` is slightly more limited than `ConvertUsing` as only what is allowed in an Expression and the underlying LINQ provider will work.
@@ -140,7 +140,7 @@ For more information, see [the tests](https://github.com/AutoMapper/AutoMapper/s
 LINQ can support aggregate queries, and AutoMapper supports LINQ extension methods. In the custom projection example, if we renamed the `TotalContacts` property to `ContactsCount`, AutoMapper would match to the `Count()` extension method and the LINQ provider would translate the count into a correlated subquery to aggregate child records.
 
 AutoMapper can also support complex aggregations and nested restrictions, if the LINQ provider supports it:
-```
+```c#
 cfg.CreateMap<Course, CourseModel>()
     .ForMember(m => m.EnrollmentsStartingWithA,
           opt => opt.MapFrom(c => c.Enrollments.Where(e => e.Student.LastName.StartsWith("A")).Count()));
@@ -149,13 +149,13 @@ This query returns the total number of students, for each course, whose last nam
 
 ### Parameterization
 Occasionally, projections need runtime parameters for their values. Consider a projection that needs to pull in the current username as part of its data. Instead of using post-mapping code, we can parameterize our MapFrom configuration:
-```
+```c#
 string currentUserName = null;
 cfg.CreateMap<Course, CourseModel>()
     .ForMember(m => m.CurrentUserName, opt => opt.MapFrom(src => currentUserName));
 ```
 When we project, we'll substitute our parameter at runtime:
-```
+```c#
 dbContext.Courses.ProjectTo<CourseModel>(Config, new { currentUserName = Request.User.Name });
 ```
 This works by capturing the name of the closure's field name in the original expression, then using an anonymous object/dictionary to apply the value to the parameter value before the query is sent to the query provider.
