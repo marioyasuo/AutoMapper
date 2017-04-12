@@ -14,6 +14,8 @@ Or dynamic service location, to be used in the case of instance-based containers
 
     var dest = mapper.Map<Source, Destination>(new Source { Value = 15 });
 ```
+### Gotchas
+Using DI is effectively mutually exclusive with using the IQueryable.ProjectTo extension method.  Use ``` IEnumerab le.Select(_mapper.Map<DestinationType>).ToList() ``` instead.
 
 ### Ninject
 
