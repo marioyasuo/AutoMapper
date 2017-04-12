@@ -7,6 +7,7 @@ AutoMapper supports the ability to construct [[Custom Value Resolvers]] and [[Cu
         cfg.CreateMap<Source, Destination>();
     });
 ```
+
 Or dynamic service location, to be used in the case of instance-based containers (including child/nested containers):
 ```c#
     var mapper = new Mapper(Mapper.Configuration, childContainer.GetInstance);
@@ -42,6 +43,89 @@ public class AutoMapperModule : NinjectModule
         });
 
         return config;
+    }
+}
+```
+### Simple Injector
+
+The workflow is as follows: 
+
+1) Register your types via MyRegistrar.Register
+2) The MapperProvider allows you to directly inject an instance of IMapper into your other classes
+3) SomeProfile resolves a value using PropertyThatDependsOnIocValueResolver
+4) PropertyThatDependsOnIocValueResolver has IService injected into it, which is then able to be used
+
+The ValueResolver has access to IService because we register our container via MapperConfigurationExpression.ConstructServicesUsing
+
+```c#
+public class MyRegistrar
+{
+    public void Register(Container container)
+    {
+        // Injectable service
+        container.RegisterSingleton<IService, SomeService>();
+        
+        // Automapper
+        container.RegisterSingleton(() => GetMapper(container));
+    }
+
+    private AutoMapper.IMapper GetMapper(Container container)
+    {
+        var mp = container.GetInstance<MapperProvider>();
+        return mp.GetMapper();
+    }
+}
+
+public class MapperProvider
+{
+    private readonly Container _container;
+
+    public MapperProvider(Container container)
+    {
+        _container = container;
+    }
+
+    public IMapper GetMapper()
+    {
+        var mce = new MapperConfigurationExpression();
+        mce.ConstructServicesUsing(_container.GetInstance);
+
+        var profiles = typeof(SomeProfile).Assembly.GetTypes()
+            .Where(t => typeof(Profile).IsAssignableFrom(t))
+            .ToList();
+
+        mce.AddProfiles(profiles);
+
+        var mc = new MapperConfiguration(mce);
+        mc.AssertConfigurationIsValid();
+
+        IMapper m = new Mapper(mc, t => _container.GetInstance(t));
+
+        return m;
+    }
+}
+
+public class SomeProfile : Profile
+{
+    public SomeProfile()
+    {
+        var map = CreateMap<MySourceType, MyDestinationType>();
+        map.ForMember(d => d.PropertyThatDependsOnIoc, opt => opt.ResolveUsing<PropertyThatDependsOnIocValueResolver>());
+    }
+}
+
+public class PropertyThatDependsOnIocValueResolver : IValueResolver<MySourceType, object, int>
+{
+    private readonly IService _service;
+
+    public PropertyThatDependsOnIocValueResolver(IService service)
+    {
+        _service = service;
+    }
+
+    int IValueResolver<MySourceType, object, int>.Resolve(MySourceType source, object destination, int destMember, ResolutionContext context)
+    {
+        return _service.MyMethod(source);
     }
 }
 ```
