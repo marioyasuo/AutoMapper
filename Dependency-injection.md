@@ -17,6 +17,9 @@ Or dynamic service location, to be used in the case of instance-based containers
 ### Gotchas
 Using DI is effectively mutually exclusive with using the IQueryable.ProjectTo extension method.  Use ``` IEnumerable.Select(_mapper.Map<DestinationType>).ToList() ``` instead.
 
+# ASP.NET Core
+
+There is a [NuGet package](https://www.nuget.org/packages/AutoMapper.Extensions.Microsoft.DependencyInjection/) to be used with the default injection mechanism described [here](https://lostechies.com/jimmybogard/2016/07/20/integrating-automapper-with-asp-net-core-di/).
 ### Ninject
 
 For those using Ninject here is an example of a Ninject module for AutoMapper 
@@ -131,7 +134,3 @@ public class PropertyThatDependsOnIocValueResolver : IValueResolver<MySourceType
     }
 }
 ```
-
-# ASP.NET Core
-
-There is a [NuGet package](https://www.nuget.org/packages/AutoMapper.Extensions.Microsoft.DependencyInjection/) to be used with the default injection mechanism described [here](https://lostechies.com/jimmybogard/2016/07/20/integrating-automapper-with-asp-net-core-di/).
