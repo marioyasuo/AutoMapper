@@ -73,16 +73,16 @@ public class MultBy2Resolver : IValueResolver<object, object, int> {
 ## Custom constructor methods
 Because we only supplied the type of the custom resolver to AutoMapper, the mapping engine will use reflection to create an instance of the value resolver.
 
-If we don't want AutoMapper to use reflection to create the instance, we can either supply the instance directly, or use the ConstructedBy method to supply a custom constructor method:
+If we don't want AutoMapper to use reflection to create the instance we can supply it directly:
 
 ```c#
     Mapper.Initialize(cfg => cfg.CreateMap<Source, Destination>()
     	.ForMember(dest => dest.Total, 
-    		opt => opt.ResolveUsing<CustomResolver>().ConstructedBy(() => new CustomResolver())
+    		opt => opt.ResolveUsing(new CustomResolver())
     	);
 ```
 
-AutoMapper will execute this callback function instead of using reflection during the mapping operation, helpful in scenarios where the resolver might have constructor arguments or need to be constructed by an IoC container.
+AutoMapper will execute this constructor instead of using reflection during the mapping operation, helpful in scenarios where the resolver might have constructor arguments or need to be constructed by an IoC container.
 ## Customizing the source value supplied to the resolver
 By default, AutoMapper passes the source object to the resolver. This limits the reusability of resolvers, since the resolver is coupled to the source type. If, however, we supply a common resolver across multiple types, we configure AutoMapper to redirect the source value supplied to the resolver, and also use a different resolver interface so that our resolver can get use of the source/destination members:
 ```c#
