@@ -46,4 +46,4 @@ By default, AutoMapper uses the destination type to validate members. It assumes
     );
 ```
 
-To skip validation altogether for this map, use `MemberList.None`. This is the default when calling `ReverseMap()`.
+To skip validation altogether for this map, use `MemberList.None`.
