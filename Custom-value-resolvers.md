@@ -113,3 +113,7 @@ This is how to setup the mapping for this custom resolver
 Mapper.CreateMap<Source, Dest>()
     .ForMember(d => d.Foo, opt => opt.ResolveUsing(res => res.Context.Options.Items["Foo"]));
 ```
+
+## ForPath
+
+Similar to ForMember, from 6.1.0 there is ForPath. Check out [the tests](https://github.com/AutoMapper/AutoMapper/search?utf8=%E2%9C%93&q=ForPath&type=) for examples.
