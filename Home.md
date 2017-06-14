@@ -12,7 +12,7 @@ Also Jimmy Bogard's [blog](https://lostechies.com/jimmybogard/category/automappe
 
 # General Features
 * [[Flattening]]
-* [[Reverse-Mapping-and-Unflattening]]
+* [[Reverse Mapping and Unflattening]]
 * [[Projection]]
 * [[Configuration Validation]]
 * [[Lists and Arrays]]
