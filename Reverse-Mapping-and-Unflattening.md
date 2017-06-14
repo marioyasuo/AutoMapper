@@ -1,0 +1,72 @@
+Starting with 6.1.0, AutoMapper now supports richer reverse mapping support. Given our entities:
+
+```c#
+public class Order {
+  public decimal Total { get; set; }
+  public Customer Customer { get; set; } 
+}
+public class Customer {
+  public string Name { get; set; }
+}
+```
+
+We can flatten this into a DTO:
+
+```c#
+public class OrderDto {
+  public decimal Total { get; set; }
+  public string CustomerName { get; set; }
+}
+```
+
+We can map both directions, including unflattening:
+
+```c#
+Mapper.Initialize(cfg => {
+  cfg.CreateMap<Order, OrderDto>()
+     .ReverseMap();
+});
+```
+
+By calling `ReverseMap`, AutoMapper creates a reverse mapping configuration that includes unflattening:
+
+```c#
+var customer = new Customer {
+  Name = "Bob"
+};
+var order = new Order {
+  Customer = customer,
+  Total = 15.8m
+};
+
+var orderDto = Mapper.Map<Order, OrderDto>(order);
+
+orderDto.CustomerName = "Joe";
+
+Mapper.Map(orderDto, order);
+
+order.Customer.Name.ShouldEqual("Joe");
+```
+
+### Customizing reverse mapping
+
+AutoMapper will automatically reverse map "Customer.Name" from "CustomerName" based on the original flattening. If you use MapFrom, AutoMapper will attempt to reverse the map:
+
+```c#
+cfg.CreateMap<Order, OrderDto>()
+    .ForMember(d => d.Name, opt => opt.MapFrom(src => src.Customer.Name))
+    .ReverseMap();
+```
+
+As long as the `MapFrom` path are member accessors, AutoMapper will unflatten from the same path (`Name` => `Customer.Name`).
+
+If you need to customize this, for a reverse map you can use `ForPath`:
+
+```c#
+cfg.CreateMap<Order, OrderDto>()
+    .ForMember(d => d.Name, opt => opt.MapFrom(src => src.Customer.Name))
+    .ReverseMap()
+    .ForPath(s => s.Customer.Details.Name, opt => opt.MapFrom(src => src.Name));
+```
+
+For most cases you shouldn't need this, as the original MapFrom will be reversed for you. Use ForPath when the path to get and set the values are different.
