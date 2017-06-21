@@ -8,7 +8,7 @@ AutoMapper supports the following platforms:
 
 New to AutoMapper? Check out the [[Getting Started]] page first.
 
-Also Jimmy Bogard's [blog](https://lostechies.com/jimmybogard/category/automapper/) has useful info.
+Also Jimmy Bogard's [old blog](https://lostechies.com/jimmybogard/category/automapper/) has useful info. The new one is [here](https://www.google.ro/search?q=AutoMapper+site:https://jimmybogard.com/).
 
 # General Features
 * [[Flattening]]
