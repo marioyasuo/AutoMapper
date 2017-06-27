@@ -70,3 +70,12 @@ cfg.CreateMap<Order, OrderDto>()
 ```
 
 For most cases you shouldn't need this, as the original MapFrom will be reversed for you. Use ForPath when the path to get and set the values are different.
+
+If you do not want unflattening behavior, you can remove the call to `ReverseMap` and create two separate maps. Or, you can use Ignore:
+
+```c#
+cfg.CreateMap<Order, OrderDto>()
+    .ForMember(d => d.Name, opt => opt.MapFrom(src => src.Customer.Name))
+    .ReverseMap()
+    .ForPath(s => s.Customer.Name, opt => opt.Ignore());
+```
