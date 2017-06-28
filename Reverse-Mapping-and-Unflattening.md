@@ -54,19 +54,19 @@ AutoMapper will automatically reverse map "Customer.Name" from "CustomerName" ba
 
 ```c#
 cfg.CreateMap<Order, OrderDto>()
-    .ForMember(d => d.Name, opt => opt.MapFrom(src => src.Customer.Name))
+    .ForMember(d => d.CustomerName, opt => opt.MapFrom(src => src.Customer.Name))
     .ReverseMap();
 ```
 
-As long as the `MapFrom` path are member accessors, AutoMapper will unflatten from the same path (`Name` => `Customer.Name`).
+As long as the `MapFrom` path are member accessors, AutoMapper will unflatten from the same path (`CustomerName` => `Customer.Name`).
 
 If you need to customize this, for a reverse map you can use `ForPath`:
 
 ```c#
 cfg.CreateMap<Order, OrderDto>()
-    .ForMember(d => d.Name, opt => opt.MapFrom(src => src.Customer.Name))
+    .ForMember(d => d.CustomerName, opt => opt.MapFrom(src => src.Customer.Name))
     .ReverseMap()
-    .ForPath(s => s.Customer.Details.Name, opt => opt.MapFrom(src => src.Name));
+    .ForPath(s => s.Customer.Name, opt => opt.MapFrom(src => src.CustomerName));
 ```
 
 For most cases you shouldn't need this, as the original MapFrom will be reversed for you. Use ForPath when the path to get and set the values are different.
@@ -75,7 +75,7 @@ If you do not want unflattening behavior, you can remove the call to `ReverseMap
 
 ```c#
 cfg.CreateMap<Order, OrderDto>()
-    .ForMember(d => d.Name, opt => opt.MapFrom(src => src.Customer.Name))
+    .ForMember(d => d.CustomerName, opt => opt.MapFrom(src => src.Customer.Name))
     .ReverseMap()
     .ForPath(s => s.Customer.Name, opt => opt.Ignore());
 ```
