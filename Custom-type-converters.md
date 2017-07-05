@@ -37,7 +37,7 @@ And supply AutoMapper with either an instance of a custom type converter, or sim
     public void Example()
     {
         Mapper.Initialize(cfg => {
-          cfg.CreateMap<string, int>().ConvertUsing(Convert.ToInt32);
+          cfg.CreateMap<string, int>().ConvertUsing(s => Convert.ToInt32(s));
           cfg.CreateMap<string, DateTime>().ConvertUsing(new DateTimeTypeConverter());
           cfg.CreateMap<string, Type>().ConvertUsing<TypeTypeConverter>();
           cfg.CreateMap<Source, Destination>();
@@ -52,7 +52,7 @@ And supply AutoMapper with either an instance of a custom type converter, or sim
         };
         
         Destination result = Mapper.Map<Source, Destination>(source);
-        result.Value3.ShouldEqual(typeof (Destination));
+        result.Value3.ShouldEqual(typeof(Destination));
     }
     
     public class DateTimeTypeConverter : ITypeConverter<string, DateTime>
@@ -67,7 +67,7 @@ And supply AutoMapper with either an instance of a custom type converter, or sim
     {
         public Type Convert(string source, Type destination, ResolutionContext context)
         {
-              return context.SourceType;
+              return Assembly.GetExecutingAssembly().GetType(source);
         }
     }
 ```
