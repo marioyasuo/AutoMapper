@@ -4,3 +4,8 @@ AutoMapper creates an execution plan for your mapping. That execution plan can b
    var executionPlan = configuration.BuildExecutionPlan(typeof(Foo), typeof(Bar));
    ```
 Be sure to remove all such code before release.
+
+For ProjectTo, you need to inspect IQueryable.Expression.
+```
+   var expression = context.Entities.ProjectTo<Dto>().Expression;
+```
