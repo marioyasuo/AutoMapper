@@ -62,7 +62,7 @@ Although the destination member (Total) did not have any matching source member,
 
 If we don't care about the source/destination types in our value resolver, or want to reuse them across maps, we can just use "object" as the source/destination types:
 
-```
+```c#
 public class MultBy2Resolver : IValueResolver<object, object, int> {
     public int Resolve(object source, object dest, int destMember, ResolutionContext context) {
         return destMember * 2;
