@@ -2,7 +2,7 @@ Null substitution allows you to supply an alternate value for a destination memb
 
 ```C#
     var config = new MapperConfiguration(cfg => cfg.CreateMap<Source, Dest>()
-        .ForMember(dest => dest.Value, opt => opt.NullSubstitute("Other Value"));
+        .ForMember(destination => destination.Value, opt => opt.NullSubstitute("Other Value")));
 
     var source = new Source { Value = null };
     var mapper = config.CreateMapper();
