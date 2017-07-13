@@ -59,7 +59,7 @@ Is the default values set by [Configuration](https://github.com/AutoMapper/AutoM
 
 ## Public Setters
 
-For automapper to copy values into objects, the objects should be provisioned with public setters. Public setters are fundamental, however might be overlooked at times. 
+For automapper to copy values into object's properties, the objects should be provisioned with public setters. Public setters are fundamental, however might be overlooked at times. 
 
 Here is an example:
 
