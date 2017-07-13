@@ -57,6 +57,31 @@ public class Foo
 
 Is the default values set by [Configuration](https://github.com/AutoMapper/AutoMapper/wiki/Configuration) if you don't use AddMemberConfiguration().
 
+## Public Setters
+
+For automapper to copy values into objects, the objects should be provisioned with public setters. Public setters are fundamental, however might be overlooked at times. 
+
+Here is an example:
+
+```
+public class PaginatedResult<T> where T : class
+{
+    private List<T> _items;
+    private int _totalCount { get; set; }
+
+    public List<T> Items
+    {
+	get { return _items; }
+	set { _items = value; }
+    }
+    public int TotalCount
+    {
+	get { return _totalCount ; }
+	set { _totalCount = value ; }
+    }	
+}
+```
+
 # Expand-ability
 
 Each of the AddName and AddMember types are based on an interface ISourceToDestinationNameMapper and IChildMemberConfiguration.  You can make your own classes off the interface and configure their properties through the lambda statement argument, so you can have fine tune control over how AutoMapper resolves property maps.
