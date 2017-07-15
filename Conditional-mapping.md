@@ -3,11 +3,11 @@ AutoMapper allows you to add conditions to properties that must be met before th
 This can be used in situations like the following where we are trying to map from an int to an unsigned int.
 ````
 class Foo{
-  int baz;
+  public int baz;
 }
 
 class Bar { 
-  uint baz; 
+  public uint baz; 
 }
 ````
 In the following mapping the property baz will only be mapped if it is greater than or equal to 0 in the source object.
