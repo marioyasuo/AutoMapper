@@ -48,6 +48,8 @@ Mapper.Map(orderDto, order);
 order.Customer.Name.ShouldEqual("Joe");
 ```
 
+Unflattening is only configured for `ReverseMap`. If you want unflattening, you must configure `Entity` -> `Dto` then call `ReverseMap` to create an unflattening type map configuration from the `Dto` -> `Entity`.
+
 ### Customizing reverse mapping
 
 AutoMapper will automatically reverse map "Customer.Name" from "CustomerName" based on the original flattening. If you use MapFrom, AutoMapper will attempt to reverse the map:
