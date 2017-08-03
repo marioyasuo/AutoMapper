@@ -40,6 +40,8 @@ To be specific, the source collection types supported include:
 
 For the non-generic enumerable types, only unmapped, assignable types are supported, as AutoMapper will be unable to "guess" what types you're trying to map.  As shown in the example above, it's not necessary to explicitly configure list types, only their member types.
 
+When mapping to an existing collection, the destination collection is cleared first. If this is not what you want, take a look at [AutoMapper.Collection](https://github.com/AutoMapper/AutoMapper.Collection).
+
 # Polymorphic element types in collections
 Many times, we might have a hierarchy of types in both our source and destination types.  AutoMapper supports polymorphic arrays and collections, such that derived source/destination types are used if found.
 ```csharp
