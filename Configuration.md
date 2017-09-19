@@ -9,7 +9,7 @@ var config = new MapperConfiguration(cfg => {
 });
 ```
 
-The `MapperConfiguration` instance can be stored statically, in a static field or in a dependency injection container. Once created it cannot change/be modified.
+The `MapperConfiguration` instance can be stored statically, in a static field or in a dependency injection container. Once created it cannot be changed/modified.
 
 Alternatively, you can use the static Mapper instance to initialize AutoMapper:
 
