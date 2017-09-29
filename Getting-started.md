@@ -13,7 +13,7 @@ First, you need both a source and destination type to work with.  The destinatio
 
 AutoMapper will ignore null reference exceptions when mapping your source to your target. This is by design. If you don't like this approach, you can combine AutoMapper's approach with [[Custom-value-resolvers]] if needed.
 
-Once you have your types you can create a map for the two types using a `MapperConfiguration` or the static `Mapper` instance and CreateMap. You only need one `MapperConfiguration` instance typically per AppDomain and should be instantiated during startup. Alternatively, you can just use `Mapper.Initialize` (more examples of initial setup see in [Static-and-Instance-API] (https://github.com/AutoMapper/AutoMapper/wiki/Static-and-Instance-API) ).
+Once you have your types you can create a map for the two types using a `MapperConfiguration` or the static `Mapper` instance and CreateMap. You only need one `MapperConfiguration` instance typically per AppDomain and should be instantiated during startup. Alternatively, you can just use `Mapper.Initialize` (more examples of initial setup see in [Static-and-Instance-API](https://github.com/AutoMapper/AutoMapper/wiki/Static-and-Instance-API) ).
 
 ```
     Mapper.Initialize(cfg => cfg.CreateMap<Order, OrderDto>());
