@@ -205,3 +205,14 @@ Mapper.Configuration.CompileMappings();
 ```
 
 For a few hundred mappings, this may take a couple of seconds.
+
+## Allow additive type map creation 
+
+By default, AutoMapper disallows duplicate CreateMap calls. This can be explicitly allowed.
+
+```c#
+Mapper.Initialize(cfg => {
+    cfg.Advanced.AllowAdditiveTypeMapCreation = true;
+});
+Mapper.AssertConfigurationIsValid();
+```
