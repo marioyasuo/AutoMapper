@@ -1,5 +1,5 @@
 AutoMapper can support an open generic type map. Create a map for the open generic types:
-```
+```c#
 public class Source<T> {
     public T Value { get; set; }
 }
@@ -12,7 +12,7 @@ public class Destination<T> {
 Mapper.Initialize(cfg => cfg.CreateMap(typeof(Source<>), typeof(Destination<>)));
 ```
 You don't need to create maps for closed generic types. AutoMapper will apply any configuration from the open generic mapping to the closed mapping at runtime:
-```
+```c#
 var source = new Source<int> { Value = 10 };
 
 var dest = mapper.Map<Source<int>, Destination<int>>(source);
