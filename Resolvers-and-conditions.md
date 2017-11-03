@@ -62,7 +62,7 @@ CreateMap<SourceClass, TargetClass>()
 ````
 The condition prevents the Value property from being mapped onto the target, but the custom member mapping would fail before that point because it calls Value.Length, and Value is null. 
 
-Prevent this by ensuring the custom member mapping code can complete safely regardless of conditions:
+Prevent this by using a [PreCondition](https://github.com/AutoMapper/AutoMapper/wiki/Conditional-mapping#preconditions) instead or by ensuring the custom member mapping code can complete safely regardless of conditions:
 
 ```
 	.ForMember(d => d.ValueLength, o => o.MapFrom(s => s != null ? s.Value.Length : 0))
