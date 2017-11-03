@@ -1,5 +1,3 @@
-### Resolving the destination value still has to work
-
 For each property mapping, AutoMapper attempts to resolve the destination value **before** evaluating the condition. So it needs to be able to do that without throwing an exception even if the condition will prevent the resulting value from being used.
 
 As an example, here's sample output from [BuildExecutionPlan](https://github.com/AutoMapper/AutoMapper/wiki/Understanding-your-mapping) (processed using [ReadableExpressions](https://www.nuget.org/packages/AgileObjects.ReadableExpressions)) for a single property:
